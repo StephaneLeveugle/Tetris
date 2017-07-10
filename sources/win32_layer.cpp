@@ -1,3 +1,12 @@
+// TODO: 
+// - Force 60fps & improve controls
+// - Add rotation
+// - Add several pieces
+// - Add losing
+// - Add points
+
+
+
 #include <Windows.h>
 #include <stdint.h>
 
@@ -20,6 +29,8 @@ static void *buffer;
 static bool global_isGameRunning = true;
 
 #include "game.h"
+#include "movement.h"
+#include "movement.cpp"
 #include "game.cpp"
 
 static GameControls gameControls = {};
