@@ -1,12 +1,3 @@
-// TODO: 
-// - Force 60fps & improve controls
-// - Add rotation
-// - Add several pieces
-// - Add losing
-// - Add points
-
-
-
 #include <Windows.h>
 #include <stdint.h>
 

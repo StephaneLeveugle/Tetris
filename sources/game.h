@@ -22,8 +22,28 @@ struct GameControls
   bool isDownPressed = false;
 };
 
+enum PieceType
+{
+    PIECE_TYPE_CUBE,
+    PIECE_TYPE_RECT,
+
+    PIECE_TYPE_COUNT,
+};
+
+struct Piece
+{
+  int x0;
+  int y0;
+  int width;
+  int height;
+  bool isActive;
+  PieceType type;
+};
+
 void setActivePieceToUnactive(void *buffer);
 void spawnNewPiece(void *buffer);
+void spawnNewCube(void *buffer);
+void spawnNewRect(void *buffer);
 void gameUpdate(void *buffer, GameControls gameControls);
 void clearFullLines(void *buffer);
 void eraseLine(uint32 *begin, uint32 *end);
