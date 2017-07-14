@@ -36,9 +36,6 @@
 
 #include "game.h"
 
-static Piece *activePiece = nullptr;
-
-
 void gameUpdate(void *buffer, GameControls gameControls)
 {
   static uint64 nbOfCalls = 0;
@@ -139,7 +136,8 @@ void gameInit(void *buffer)
     }
     row += GAME_WIDTH * BYTE_PER_PIXEL;
   }
-  spawnUp(buffer);
+  
+  *activePiece = spawnLeftTurn(buffer);
 }
 
 

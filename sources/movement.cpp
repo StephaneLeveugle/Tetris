@@ -1,23 +1,56 @@
 bool canActivePieceMoveDown(void *buffer)
 {
-  uint8 *row = (uint8 *)buffer;
+  uint32 *pixel = goTo(buffer, activePiece->x0, activePiece->y0);
 
-  for(uint64 y = 0; y < GAME_HEIGHT; ++y)
+  int nbOfPixelsGoneThrough = 0;
+
+  while(*pixel == ACTIVE_PIECE_BORDER_COLOR)
   {
-    uint32 *pixel = (uint32 *)row;
-
-    for(uint64 x = 0; x < GAME_WIDTH; ++x)
+    if(*(pixel - GAME_WIDTH) != VOID_COLOR && *(pixel - GAME_WIDTH) != ACTIVE_PIECE_BORDER_COLOR)
     {
-      if(*pixel > MIN_ACTIVE_PIECE_BORDER_COLOR)
-      {
-        return canPieceGoDown(pixel);
-      }
-      pixel++;
+      return false;
     }
-    row += GAME_WIDTH * BYTE_PER_PIXEL;
+    pixel++;
+    nbOfPixelsGoneThrough++;
   }
 
-  return false;
+  // if we didn't finish
+  if(nbOfPixelsGoneThrough < activePiece->width)
+  {
+    // go back once to the left
+    pixel--;
+    // decrement to make sure it isn't counted twice
+    nbOfPixelsGoneThrough--;
+
+    // try to go down
+    if(*(pixel - GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR)
+    {
+      while(*(pixel - GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) pixel -= GAME_WIDTH;
+    }
+    // try to go up
+    else if(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR)
+    {
+      while(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) pixel += GAME_WIDTH;
+    }
+    // wtf?
+    else
+    {
+      return false;
+    }
+
+    // now check again
+    while(*pixel == ACTIVE_PIECE_BORDER_COLOR)
+    {
+      if(*(pixel - GAME_WIDTH) != VOID_COLOR && *(pixel - GAME_WIDTH) != ACTIVE_PIECE_BORDER_COLOR)
+      {
+        return false;
+      }
+      pixel++;
+      nbOfPixelsGoneThrough++;
+    }
+  }
+
+  return nbOfPixelsGoneThrough == activePiece->width;
 }
 
 void moveDown(void *buffer, bool isDownPressed)
@@ -55,6 +88,8 @@ void moveDown(void *buffer, bool isDownPressed)
 
       row += GAME_WIDTH * BYTE_PER_PIXEL;
     }
+
+    activePiece->y0--;
   }
 
   nbOfCalls++;

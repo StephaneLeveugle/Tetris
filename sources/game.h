@@ -21,6 +21,9 @@ uint32* goTo(void *buffer, uint32 x, uint32 y);
 #include "movement.h"
 #include "draw.h"
 #include "piece.h"
+
+Piece *activePiece = (Piece *) malloc(sizeof(Piece));
+
 #include "movement.cpp"
 #include "draw.cpp"
 #include "piece.cpp"

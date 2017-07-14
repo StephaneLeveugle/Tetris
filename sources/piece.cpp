@@ -116,14 +116,18 @@ Piece spawnLeftTurn(void *buffer)
 void spawnNewPiece(void *buffer)
 {
   static uint64 nbOfCalls = 0;
+  Piece newPiece = {};
+
   if(nbOfCalls++ % 2 == 0)
   {
-    spawnNewCube(buffer);
+    newPiece = spawnSquare(buffer);
   }
   else
   {
-    spawnNewRect(buffer);
+    newPiece = spawnStraight(buffer);
   }
+
+  *activePiece = newPiece;
 }
 
 void setActivePieceToUnactive(void *buffer)

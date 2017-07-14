@@ -40,7 +40,7 @@ void drawStraight(void *buffer)
     // left border
     drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 150, GAME_HEIGHT - 2, -25);
     // right border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 250, GAME_HEIGHT - 2, -26);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 249, GAME_HEIGHT - 2, -25);
     // bottom border
     drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 150, GAME_HEIGHT - 27, 100);
   }
@@ -63,7 +63,7 @@ void drawSquare(void *buffer)
     // left border
     drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 2, -50);
     // right border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 225, GAME_HEIGHT - 2, -51);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 224, GAME_HEIGHT - 2, -50);
     // bottom border
     drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 52, 50);
   }
@@ -81,18 +81,18 @@ void drawUp(void *buffer)
   // draw borders (from top to bottom)
   {
     // top border
-    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 200, GAME_HEIGHT - 2, 25);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 199, GAME_HEIGHT - 2, 25);
     // top left border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 200, GAME_HEIGHT - 2, -25);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 199, GAME_HEIGHT - 2, -25);
     // top right border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 225, GAME_HEIGHT - 2, -25);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 224, GAME_HEIGHT - 2, -25);
     // middle borders
-    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 27, 26);
-    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 225, GAME_HEIGHT - 27, 25);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 27, 25);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 224, GAME_HEIGHT - 27, 25);
     // left border
     drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 27, -25);
     // right border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 250, GAME_HEIGHT - 27, -25);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 249, GAME_HEIGHT - 27, -25);
     // bottom border
     drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 52, 75);
   }
