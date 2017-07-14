@@ -20,8 +20,24 @@
 // we go from the bottom left to the top right 
 
 // The behavior above will break the blocks of pieces
+// possible solution :
+// if first piece (x0 + width) > second piece (x0)
+// then we've got a block
+// merge the two pieces?
+// Should we treat it as a single block, or two pieces, or both?
+
+// I think we should store it and treat it as a single block
+// we only keep track of the active piece + an array of blocks
+
+
+// CREATE DRAW.CPP
+// fillPiece function
+// probably only need to be done when ititializing the active piece
 
 #include "game.h"
+
+static Piece *activePiece = nullptr;
+
 
 void gameUpdate(void *buffer, GameControls gameControls)
 {
@@ -81,7 +97,7 @@ void setActivePieceToUnactive(void *buffer)
     {
       if(*pixel == ACTIVE_PIECE_BORDER_COLOR)
       {
-          *pixel = PIECE_BORDER_COLOR;      
+        *pixel = PIECE_BORDER_COLOR;
       }
       pixel++;
     }
@@ -154,7 +170,7 @@ void gameInit(void *buffer)
     }
     row += GAME_WIDTH * BYTE_PER_PIXEL;
   }
-  spawnNewRect(buffer);
+  spawnLeftTurn(buffer);
 }
 
 void spawnNewCube(void *buffer)
@@ -172,11 +188,11 @@ void spawnNewCube(void *buffer)
         {
           *pixel = ACTIVE_PIECE_BORDER_COLOR;
         }
-        else if((x == 176 || x == 225) && y >(GAME_HEIGHT - 50))
+        else if((x == 176 || x == 225) && y > (GAME_HEIGHT - 50))
         {
           *pixel = ACTIVE_PIECE_BORDER_COLOR;
         }
-        else if((y >(GAME_HEIGHT - 50)) && (x >= 176) && (x < 226))
+        else if((y > (GAME_HEIGHT - 50)) && (x >= 176) && (x < 226))
         {
           *pixel = 255;
         }
@@ -202,11 +218,11 @@ void spawnNewRect(void *buffer)
         {
           *pixel = ACTIVE_PIECE_BORDER_COLOR;
         }
-        else if((x == 151 || x == 250) && y >(GAME_HEIGHT - 50))
+        else if((x == 151 || x == 250) && y > (GAME_HEIGHT - 50))
         {
           *pixel = ACTIVE_PIECE_BORDER_COLOR;
         }
-        else if((y >(GAME_HEIGHT - 50)) && (x >= 151) && (x < 251))
+        else if((y > (GAME_HEIGHT - 50)) && (x >= 151) && (x < 251))
         {
           *pixel = 255;
         }
@@ -216,3 +232,28 @@ void spawnNewRect(void *buffer)
     row += GAME_WIDTH * BYTE_PER_PIXEL;
   }
 }
+
+Piece spawnLeftTurn(void *buffer)
+{
+  drawLeftTurn(buffer);
+
+  Piece leftTurn = {};
+  leftTurn.x0 = 175;
+  leftTurn.y0 = GAME_HEIGHT - 27;
+  leftTurn.width = 75;
+  leftTurn.height = 50;
+  leftTurn.isActive = true;
+  return leftTurn;
+}
+
+uint32* goTo(void *buffer, uint32 x, uint32 y)
+{
+  uint32* pixel = (uint32 *) buffer;
+  pixel += (y * GAME_WIDTH) + x;
+  return pixel;
+}
+
+
+
+
+

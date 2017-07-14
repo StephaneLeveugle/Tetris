@@ -1,5 +1,3 @@
-#include "game.h"
-
 bool canActivePieceMoveDown(void *buffer)
 {
   uint8 *row = (uint8 *)buffer;

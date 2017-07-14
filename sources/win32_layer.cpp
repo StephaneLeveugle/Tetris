@@ -13,16 +13,14 @@ typedef uint64_t uint64;
 
 #define SCREEN_WIDTH 1920
 #define SCREEN_HEIGHT 1080
-#define GAME_WIDTH 402 // 2pixels of border
-#define GAME_HEIGHT 800
+#define GAME_WIDTH 402 // 2pixels of border (1left 1 right)
+#define GAME_HEIGHT 800 // 2pixels of border (1top 1bottom)
 
 static void *buffer;
 static bool global_isGameRunning = true;
 
-#include "game.h"
-#include "movement.h"
-#include "movement.cpp"
 #include "game.cpp"
+
 
 static GameControls gameControls = {};
 
@@ -152,7 +150,7 @@ LRESULT CALLBACK win32_windowCallback(HWND hWindow, UINT uMsg, WPARAM wParam, LP
 void win32_displayGame(HDC hdc, void *buffer, BITMAPINFO bitmapInfo)
 {
   StretchDIBits(hdc, 
-                (SCREEN_WIDTH / 2) - (GAME_WIDTH / 2),
+                (SCREEN_WIDTH * (3.0f / 4.0f)) - (GAME_WIDTH / 2),
                 (SCREEN_HEIGHT / 2) - (GAME_HEIGHT / 2),
                 GAME_WIDTH, GAME_HEIGHT,
                 0, 0,
@@ -214,9 +212,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
       DispatchMessageA(&msg);
     }
 
-    gameUpdate(buffer, gameControls);
+    // TODO: remember to swap them, gameUpdate should go first
     win32_displayGame(hdc, buffer, bitmapInfo);
-
+    gameUpdate(buffer, gameControls);
+//
     // Sleep(100);
   }
  
