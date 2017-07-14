@@ -11,29 +11,6 @@ struct GameControls
   bool isDownPressed = false;
 };
 
-enum PieceType
-{
-    PIECE_TYPE_CUBE,
-    PIECE_TYPE_RECT,
-
-    PIECE_TYPE_COUNT,
-};
-
-struct Piece
-{
-  int x0;
-  int y0;
-  int width;
-  int height;
-  bool isActive;
-  PieceType type;
-};
-
-void setActivePieceToUnactive(void *buffer);
-void spawnNewPiece(void *buffer);
-void spawnNewCube(void *buffer);
-void spawnNewRect(void *buffer);
-Piece spawnLeftTurn(void *buffer);
 void gameUpdate(void *buffer, GameControls gameControls);
 void clearFullLines(void *buffer);
 void eraseLine(uint32 *begin, uint32 *end);
@@ -43,7 +20,9 @@ uint32* goTo(void *buffer, uint32 x, uint32 y);
 
 #include "movement.h"
 #include "draw.h"
+#include "piece.h"
 #include "movement.cpp"
 #include "draw.cpp"
+#include "piece.cpp"
 
 #endif

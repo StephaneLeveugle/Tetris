@@ -13,10 +13,14 @@
 #define MIN_PIECE_BORDER_COLOR (117 << 16 | 117 << 8 | 117)
 #define GAME_BORDER_COLOR (255 << 8)
 
-#define LEFT_TURN_COLOR (255 << 16)
+
 
 void drawVertLine(void *buffer, uint32 content, uint32 x0, uint32 y0, int32 height);
 void drawHorLine(void *buffer, uint32 content, uint32 x0, uint32 y0, int32 width);
+
+void drawStraight(void *buffer);
+void drawSquare(void *buffer);
+void drawUp(void *buffer);
 void drawLeftTurn(void *buffer);
 
 #endif

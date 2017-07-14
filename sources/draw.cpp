@@ -30,6 +30,89 @@ void drawHorLine(void *buffer, uint32 content, uint32 x0, uint32 y0, int32 width
   }
 }
 
+// only drawn at the top with hardcoded values because it is only used in spawn (as of 14/07/17)
+void drawStraight(void *buffer)
+{
+  // draw borders (frop top to bottom)
+  {
+    // top border
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 150, GAME_HEIGHT - 2, 100);
+    // left border
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 150, GAME_HEIGHT - 2, -25);
+    // right border
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 250, GAME_HEIGHT - 2, -26);
+    // bottom border
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 150, GAME_HEIGHT - 27, 100);
+  }
+  // draw interior (from top to bottom)
+  {
+    for(int i = 1; i < 25; i++)
+    {
+      drawHorLine(buffer, STRAIGHT_COLOR, 151, GAME_HEIGHT - 2 - i, 99);
+    }
+  }
+}
+
+// only drawn at the top with hardcoded values because it is only used in spawn (as of 14/07/17)
+void drawSquare(void *buffer)
+{
+  // draw borders (frop top to bottom)
+  {
+    // top border
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 2, 50);
+    // left border
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 2, -50);
+    // right border
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 225, GAME_HEIGHT - 2, -51);
+    // bottom border
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 52, 50);
+  }
+  // draw interior (from top to bottom)
+  {
+    for(int i = 1; i < 50; i++)
+    {
+      drawHorLine(buffer, SQUARE_COLOR, 176, GAME_HEIGHT - 2 - i, 49);
+    }
+  }
+}
+// only drawn at the top with hardcoded values because it is only used in spawnLeftTurn (as of 14/07/17)
+void drawUp(void *buffer)
+{
+  // draw borders (from top to bottom)
+  {
+    // top border
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 200, GAME_HEIGHT - 2, 25);
+    // top left border
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 200, GAME_HEIGHT - 2, -25);
+    // top right border
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 225, GAME_HEIGHT - 2, -25);
+    // middle borders
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 27, 26);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 225, GAME_HEIGHT - 27, 25);
+    // left border
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 27, -25);
+    // right border
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 250, GAME_HEIGHT - 27, -25);
+    // bottom border
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 52, 75);
+  }
+  // draw interior (from top to bottom)
+  {
+    // upper part
+    for(int i = 1; i < 25; i++)
+    {
+      drawHorLine(buffer, UP_COLOR, 201, GAME_HEIGHT - 2 - i, 24);
+    }
+    // middle line
+    drawHorLine(buffer, UP_COLOR, 201, GAME_HEIGHT - 27, 24);
+    // lower part 
+    for(int i = 1; i < 25; i++)
+    {
+      drawHorLine(buffer, UP_COLOR, 176, GAME_HEIGHT - 27 - i, 74);
+    }
+  }
+}
+
 // only drawn at the top with hardcoded values because it is only used in spawnLeftTurn (as of 14/07/17)
 void drawLeftTurn(void *buffer)
 {
