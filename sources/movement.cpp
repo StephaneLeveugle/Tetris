@@ -98,40 +98,6 @@ void moveDown(void *buffer, bool isDownPressed)
 
 void moveLeft(void *buffer)
 {
-  //static uint64 nbOfCalls = 0;
-
-  //if(nbOfCalls % 2048 == 0)
-  //{
-  //  uint8 *row = (uint8 *)buffer;
-
-  //  for(uint64 y = 0; y < GAME_HEIGHT; ++y)
-  //  {
-  //    uint32 *pixel = (uint32 *)row;
-
-  //    for(uint64 x = 0; x < GAME_WIDTH; ++x)
-  //    {
-  //      if(*pixel > MIN_ACTIVE_PIECE_BORDER_COLOR && canPieceGoDown(pixel))
-  //      {
-
-  //        // perform the move while going to the right
-  //        while(*pixel > MIN_ACTIVE_PIECE_BORDER_COLOR && canActivePieceGoLeft(pixel))
-  //        {
-  //          moveVertLineLeft(pixel);
-  //          pixel++;
-  //        }
-
-  //        return;
-  //      }
-  //      pixel++;
-  //    }
-
-  //    row += GAME_WIDTH * BYTE_PER_PIXEL;
-  //  }
-  //}
-
-  //nbOfCalls++;
-
-
   uint32 *pixel = goTo(buffer, activePiece->x0, activePiece->y0);
 
   for(int i = 0; i < activePiece->width; i++)
@@ -172,7 +138,7 @@ bool canActivePieceGoLeft(void *buffer)
   // if we didn't finish (because of the piece shape)
   if(nbOfPixelsGoneThrough < activePiece->height)
   {
-    pixel--;
+    pixel -= GAME_WIDTH;
     nbOfPixelsGoneThrough--;
 
     // move as far as possible to the right
@@ -180,12 +146,13 @@ bool canActivePieceGoLeft(void *buffer)
     // try going up again
     while(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR)
     {
+      pixel += GAME_WIDTH;
+      nbOfPixelsGoneThrough++;
+
       if(*(pixel - 1) != VOID_COLOR)
       {
         return false;
       }
-      pixel += GAME_WIDTH;
-      nbOfPixelsGoneThrough++;
     }
 
     // if it is still not finished

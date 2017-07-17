@@ -5,22 +5,6 @@
 // - Add losing
 // - Add points
 
-// Create an array of pieces
-// Every frame, go through the array of pieces
-// Begin on the lowest left point of each piece
-// go to the right, checking if the pixel below is free
-// if it is not, break
-// If you are on a right edge but you know you didn't finish (because we have the width of the piece)
-// Then, try to go down, if you can't, go up
-// Continue going to the right as soon as you can!
-
-// The only special case is when the user wants the active piece to move left or right
-
-// It would be good for the array of pieces to be sorted in such a way that when we iterate over it
-// we go from the bottom left to the top right 
-
-// The behavior above will break the blocks of pieces
-// possible solution :
 // if first piece (x0 + width) > second piece (x0)
 // then we've got a block
 // merge the two pieces?
@@ -29,10 +13,6 @@
 // I think we should store it and treat it as a single block
 // we only keep track of the active piece + an array of blocks
 
-
-// CREATE DRAW.CPP
-// fillPiece function
-// probably only need to be done when ititializing the active piece
 
 #include "game.h"
 
@@ -45,9 +25,11 @@ void gameUpdate(void *buffer, GameControls gameControls)
     OutputDebugStringA("left pressed\n");
     if(canActivePieceGoLeft(buffer))
     {
-      for(int i = 0; i < PIXELS_TO_MOVE; i++)
+      int counter = 0;
+      while(counter < PIXELS_TO_MOVE && activePiece->x0 > 1)
       {
         moveLeft(buffer);
+        counter++;
       }
     }
   }
