@@ -3,7 +3,7 @@
 
 void moveLeft(void *buffer);
 void moveVertLineLeft(uint32 *pixel);
-bool canPieceGoLeft(uint32 *pixel);
+bool canActivePieceGoLeft(void *buffer);
 
 void moveRight(void *buffer);
 void moveVertLineRight(uint32 *pixel);

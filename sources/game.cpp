@@ -43,9 +43,12 @@ void gameUpdate(void *buffer, GameControls gameControls)
   if(gameControls.isLeftPressed && !gameControls.isRightPressed && (nbOfCalls % 75 == 0))
   {
     OutputDebugStringA("left pressed\n");
-    for(int i = 0; i < PIXELS_TO_MOVE; i++)
+    if(canActivePieceGoLeft(buffer))
     {
-      moveLeft(buffer);
+      for(int i = 0; i < PIXELS_TO_MOVE; i++)
+      {
+        moveLeft(buffer);
+      }
     }
   }
   else if(gameControls.isRightPressed && !gameControls.isLeftPressed && (nbOfCalls % 75 == 0))
@@ -68,9 +71,6 @@ void gameUpdate(void *buffer, GameControls gameControls)
 
   nbOfCalls++;
 }
-
-
-
 
 void clearFullLines(void *buffer)
 {
@@ -137,7 +137,7 @@ void gameInit(void *buffer)
     row += GAME_WIDTH * BYTE_PER_PIXEL;
   }
   
-  *activePiece = spawnLeftTurn(buffer);
+  *activePiece = spawnUp(buffer);
 }
 
 

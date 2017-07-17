@@ -64,7 +64,7 @@ Piece spawnStraight(void *buffer)
 
   Piece straight = {};
   straight.x0 = 150;
-  straight.y0 = GAME_HEIGHT - 27;
+  straight.y0 = GAME_HEIGHT - 26;
   straight.width = 100;
   straight.height = 25;
   straight.isActive = true;
@@ -78,7 +78,7 @@ Piece spawnSquare(void *buffer)
 
   Piece straight = {};
   straight.x0 = 175;
-  straight.y0 = GAME_HEIGHT - 52;
+  straight.y0 = GAME_HEIGHT - 51;
   straight.width = 50;
   straight.height = 50;
   straight.isActive = true;

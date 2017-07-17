@@ -213,8 +213,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
     }
 
     // TODO: remember to swap them, gameUpdate should go first
-    gameUpdate(buffer, gameControls);
     win32_displayGame(hdc, buffer, bitmapInfo);
+    gameUpdate(buffer, gameControls);
 //
     // Sleep(100);
   }
