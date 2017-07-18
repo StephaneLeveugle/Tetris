@@ -201,6 +201,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
 
   gameInit(buffer);
 
+  uint64 lastFrameTime = 0;
+  uint64 currentFrameTime = 0;
+
   while(global_isGameRunning)
   {
     //resetControls(&gameControls);
@@ -211,10 +214,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
       TranslateMessage(&msg);
       DispatchMessageA(&msg);
     }
+    
+    currentFrameTime = GetTickCount64();
 
-    // TODO: remember to swap them, gameUpdate should go first
-    win32_displayGame(hdc, buffer, bitmapInfo);
-    gameUpdate(buffer, gameControls);
+    if((currentFrameTime - lastFrameTime) > 125)
+    {
+      // TODO: remember to swap them, gameUpdate should go first
+      win32_displayGame(hdc, buffer, bitmapInfo);
+      gameUpdate(buffer, gameControls);
+
+      lastFrameTime = currentFrameTime;
+    }
+
 //
     // Sleep(100);
   }

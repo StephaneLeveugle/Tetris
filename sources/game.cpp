@@ -1,9 +1,10 @@
 // TODO: 
-// - Force 60fps & improve controls
 // - Add rotation
 // - Add several pieces
 // - Add losing
 // - Add points
+// - Improve controls (track taps)
+// - Fix collisions (left turn seems to take 1 pixel more than it should in width)
 
 // if first piece (x0 + width) > second piece (x0)
 // then we've got a block
@@ -13,6 +14,7 @@
 // I think we should store it and treat it as a single block
 // we only keep track of the active piece + an array of blocks
 
+// 
 
 #include "game.h"
 
@@ -20,7 +22,7 @@ void gameUpdate(void *buffer, GameControls gameControls)
 {
   static uint64 nbOfCalls = 0;
 
-  if(gameControls.isLeftPressed && !gameControls.isRightPressed && (nbOfCalls % 75 == 0))
+  if(gameControls.isLeftPressed && !gameControls.isRightPressed)
   {
     OutputDebugStringA("left pressed\n");
     if(canActivePieceGoLeft(buffer))
@@ -33,7 +35,7 @@ void gameUpdate(void *buffer, GameControls gameControls)
       }
     }
   }
-  else if(gameControls.isRightPressed && !gameControls.isLeftPressed && (nbOfCalls % 75 == 0))
+  else if(gameControls.isRightPressed && !gameControls.isLeftPressed)
   {
     OutputDebugStringA("right pressed\n");
     for(int i = 0; i < PIXELS_TO_MOVE; i++)
@@ -42,7 +44,24 @@ void gameUpdate(void *buffer, GameControls gameControls)
     }
   }
 
-  moveDown(buffer, gameControls.isDownPressed);
+  if(gameControls.isDownPressed)
+  {
+    for(int i = 0; i < (PIXELS_TO_MOVE * 2); i++)
+    {
+      moveDown(buffer);
+    }
+  }
+  else
+  {
+    // make it slower to move down so that it feels smoother
+    if(nbOfCalls % 8 == 0)
+    {
+      for(int i = 0; i < PIXELS_TO_MOVE; i++)
+      {
+        moveDown(buffer);
+      }
+    }
+  }
 
   if(!canActivePieceMoveDown(buffer))
   {

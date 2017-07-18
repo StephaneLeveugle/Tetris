@@ -1,5 +1,7 @@
 bool canActivePieceMoveDown(void *buffer)
 {
+  if(activePiece->y0 <= 1) return false;
+
   uint32 *pixel = goTo(buffer, activePiece->x0, activePiece->y0);
 
   int nbOfPixelsGoneThrough = 0;
@@ -53,44 +55,41 @@ bool canActivePieceMoveDown(void *buffer)
   return nbOfPixelsGoneThrough == activePiece->width;
 }
 
-void moveDown(void *buffer, bool isDownPressed)
+void moveDown(void *buffer)
 {
   static uint64 nbOfCalls = 0;
 
-  if(nbOfCalls % 16 == 0 || ((nbOfCalls % 2 == 0) && isDownPressed))
+  uint8 *row = (uint8 *)buffer;
+
+  for(uint64 y = 0; y < GAME_HEIGHT; ++y)
   {
-    uint8 *row = (uint8 *)buffer;
+    uint32 *pixel = (uint32 *)row;
 
-    for(uint64 y = 0; y < GAME_HEIGHT; ++y)
+    for(uint64 x = 0; x < GAME_WIDTH; ++x)
     {
-      uint32 *pixel = (uint32 *)row;
-
-      for(uint64 x = 0; x < GAME_WIDTH; ++x)
+      if(*pixel != GAME_BORDER_COLOR)
       {
-        if(*pixel != GAME_BORDER_COLOR)
+        if(y > 1 && *pixel != VOID_COLOR)
         {
-          if(y > 1 && *pixel != VOID_COLOR)
+          if(*(pixel - GAME_WIDTH) == VOID_COLOR)
           {
-            if(*(pixel - GAME_WIDTH) == VOID_COLOR)
-            {
-              uint32 *start = pixel;
+            uint32 *start = pixel;
 
-              if(canPieceGoDown(&pixel, &x))
-              {
-                moveHorLineDown(start, pixel);
-              }
+            if(canPieceGoDown(&pixel, &x))
+            {
+              moveHorLineDown(start, pixel);
             }
           }
         }
-
-        pixel++;
       }
 
-      row += GAME_WIDTH * BYTE_PER_PIXEL;
+      pixel++;
     }
 
-    activePiece->y0--;
+    row += GAME_WIDTH * BYTE_PER_PIXEL;
   }
+
+  activePiece->y0--;
 
   nbOfCalls++;
 }
@@ -106,14 +105,14 @@ void moveLeft(void *buffer)
     while(*(pixel - GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) pixel -= GAME_WIDTH;
     // move the vertical line to the left
     moveVertLineLeft(pixel);
-    
+
     // prepare the next iteration 
     if(i < (activePiece->width - 1))
     {
       // go up while next pixel to the right isn't ACTIVE_PIECE_BORDER_COLOR
       while(*(pixel + 1) != ACTIVE_PIECE_BORDER_COLOR) pixel += GAME_WIDTH;
     }
-    pixel++; 
+    pixel++;
   }
 
   activePiece->x0--;
