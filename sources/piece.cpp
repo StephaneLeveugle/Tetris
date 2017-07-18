@@ -86,14 +86,16 @@ Piece spawnSquare(void *buffer)
   return straight;
 }
 
+// TODO: check the height is indeed 50 pixels
+// looks different than square height but it should be the same
 Piece spawnUp(void *buffer)
 {
   drawUp(buffer);
 
   Piece up = {};
-  up.x0 = 175;
-  up.y0 = GAME_HEIGHT - 52;
-  up.width = 75;
+  up.x0 = (GAME_WIDTH / 2) - 25;
+  up.y0 = GAME_HEIGHT - 51;
+  up.width = UP_WIDTH;
   up.height = 50;
   up.isActive = true;
 
@@ -105,9 +107,9 @@ Piece spawnLeftTurn(void *buffer)
   drawLeftTurn(buffer);
 
   Piece leftTurn = {};
-  leftTurn.x0 = 175;
+  leftTurn.x0 = (GAME_WIDTH / 2) - 25;
   leftTurn.y0 = GAME_HEIGHT - 26;
-  leftTurn.width = 75;
+  leftTurn.width = LEFT_TURN_WIDTH;
   leftTurn.height = 50;
   leftTurn.isActive = true;
   return leftTurn;
@@ -118,13 +120,21 @@ void spawnNewPiece(void *buffer)
   static uint64 nbOfCalls = 0;
   Piece newPiece = {};
 
-  if(nbOfCalls++ % 2 == 0)
+  if(nbOfCalls++ % 5 == 0)
   {
     newPiece = spawnSquare(buffer);
   }
-  else
+  else if(nbOfCalls % 4 == 0)
   {
     newPiece = spawnStraight(buffer);
+  }
+  else if(nbOfCalls % 3 == 0)
+  {
+    newPiece = spawnLeftTurn(buffer);
+  }
+  else if(nbOfCalls % 2 == 0)
+  {
+    newPiece = spawnUp(buffer);
   }
 
   *activePiece = newPiece;

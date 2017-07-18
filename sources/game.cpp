@@ -139,7 +139,7 @@ void gameInit(void *buffer)
     row += GAME_WIDTH * BYTE_PER_PIXEL;
   }
   
-  *activePiece = spawnStraight(buffer);
+  *activePiece = spawnUp(buffer);
 }
 
 

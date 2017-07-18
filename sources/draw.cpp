@@ -81,40 +81,44 @@ void drawSquare(void *buffer)
     }
   }
 }
+
 // only drawn at the top with hardcoded values because it is only used in spawnLeftTurn (as of 14/07/17)
 void drawUp(void *buffer)
 {
+  // 176 with GAME_WIDTH = 402
+  int upX0 = (GAME_WIDTH / 2) - 25;
+
   // draw borders (from top to bottom)
   {
     // top border
-    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 199, GAME_HEIGHT - 2, 25);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0 + 24, GAME_HEIGHT - 2, 25);
     // top left border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 199, GAME_HEIGHT - 2, -25);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0 + 24, GAME_HEIGHT - 2, -25);
     // top right border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 224, GAME_HEIGHT - 2, -25);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0 + 49, GAME_HEIGHT - 2, -25);
     // middle borders
-    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 27, 25);
-    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 224, GAME_HEIGHT - 27, 25);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0, GAME_HEIGHT - 27, 25);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0 + 49, GAME_HEIGHT - 27, 25);
     // left border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 27, -25);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0, GAME_HEIGHT - 27, -25);
     // right border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 249, GAME_HEIGHT - 27, -25);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0 + 74, GAME_HEIGHT - 27, -25);
     // bottom border
-    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 52, 75);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0, GAME_HEIGHT - 51, 75);
   }
   // draw interior (from top to bottom)
   {
     // upper part
     for(int i = 1; i < 25; i++)
     {
-      drawHorLine(buffer, UP_COLOR, 200, GAME_HEIGHT - 2 - i, 24);
+      drawHorLine(buffer, UP_COLOR, upX0 + 25, GAME_HEIGHT - 2 - i, 24);
     }
     // middle line
-    drawHorLine(buffer, UP_COLOR, 200, GAME_HEIGHT - 27, 24);
+    drawHorLine(buffer, UP_COLOR, upX0 + 25, GAME_HEIGHT - 27, 24);
     // lower part 
-    for(int i = 1; i < 25; i++)
+    for(int i = 1; i < 24; i++)
     {
-      drawHorLine(buffer, UP_COLOR, 176, GAME_HEIGHT - 27 - i, 73);
+      drawHorLine(buffer, UP_COLOR, upX0 + 1, GAME_HEIGHT - 27 - i, 73);
     }
   }
 }
@@ -122,38 +126,40 @@ void drawUp(void *buffer)
 // only drawn at the top with hardcoded values because it is only used in spawnLeftTurn (as of 14/07/17)
 void drawLeftTurn(void *buffer)
 {
+  int leftTurnX0 = (GAME_WIDTH / 2) - 25;
+
   // draw borders (from top to bottom)
   {
     // top border
-    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 2, 50);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, leftTurnX0, GAME_HEIGHT - 2, 50);
     // top left border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 2, -25);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, leftTurnX0, GAME_HEIGHT - 2, -25);
     // top right border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 224, GAME_HEIGHT - 2, -25);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, leftTurnX0 + 49, GAME_HEIGHT - 2, -25);
     // middle left border
-    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 175, GAME_HEIGHT - 26, 25);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, leftTurnX0, GAME_HEIGHT - 26, 25);
     // middle right border
-    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 224, GAME_HEIGHT - 26, 25);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, leftTurnX0 + 49, GAME_HEIGHT - 26, 25);
     // bottom left border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 200, GAME_HEIGHT - 26, -25);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, leftTurnX0 + 24, GAME_HEIGHT - 26, -25);
     // bottom right border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 249, GAME_HEIGHT - 26, -25);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, leftTurnX0 + 74, GAME_HEIGHT - 26, -25);
     // bottom border
-    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, 200, GAME_HEIGHT - 51, 50);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, leftTurnX0 + 24, GAME_HEIGHT - 51, 50);
   }
   // draw interior (from top to bottom)
   {
     // upper part
     for(int i = 1; i < 24; i++)
     {
-      drawHorLine(buffer, LEFT_TURN_COLOR, 176, GAME_HEIGHT - 2 - i, 48);
+      drawHorLine(buffer, LEFT_TURN_COLOR, leftTurnX0 + 1, GAME_HEIGHT - 2 - i, 48);
     }
     // middle line
-    drawHorLine(buffer, LEFT_TURN_COLOR, 201, GAME_HEIGHT - 26, 24);
+    drawHorLine(buffer, LEFT_TURN_COLOR, leftTurnX0 + 25, GAME_HEIGHT - 26, 24);
     // lower part
     for(int i = 1; i < 25; i++)
     {
-      drawHorLine(buffer, LEFT_TURN_COLOR, 201, GAME_HEIGHT - 26 - i, 48);
+      drawHorLine(buffer, LEFT_TURN_COLOR, leftTurnX0 + 25, GAME_HEIGHT - 26 - i, 49);
     }
   }
 }

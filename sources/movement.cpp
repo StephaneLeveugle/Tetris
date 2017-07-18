@@ -21,8 +21,6 @@ bool canActivePieceMoveDown(void *buffer)
   {
     // go back once to the left
     pixel--;
-    // decrement to make sure it isn't counted twice
-    nbOfPixelsGoneThrough--;
 
     // try to go down
     if(*(pixel - GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR)
@@ -144,7 +142,7 @@ bool canActivePieceGoLeft(void *buffer)
     while(*(pixel + 1) == ACTIVE_PIECE_BORDER_COLOR) pixel++;
     
     // decrement ONLY if the piece continues upward
-    if(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) nbOfPixelsGoneThrough--;
+    //if(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) nbOfPixelsGoneThrough--;
 
     // try going up again
     while(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR)

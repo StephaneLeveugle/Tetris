@@ -10,6 +10,8 @@
 // dimensions
 #define SQUARE_WIDTH 50
 #define STRAIGHT_WIDTH 100
+#define LEFT_TURN_WIDTH 75
+#define UP_WIDTH 75
 
 enum PieceType
 {
