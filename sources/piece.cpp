@@ -63,9 +63,9 @@ Piece spawnStraight(void *buffer)
   drawStraight(buffer);
 
   Piece straight = {};
-  straight.x0 = 150;
+  straight.x0 = (GAME_WIDTH / 2) - (STRAIGHT_WIDTH / 2);
   straight.y0 = GAME_HEIGHT - 26;
-  straight.width = 100;
+  straight.width = STRAIGHT_WIDTH;
   straight.height = 25;
   straight.isActive = true;
 
@@ -77,9 +77,9 @@ Piece spawnSquare(void *buffer)
   drawSquare(buffer);
 
   Piece straight = {};
-  straight.x0 = 175;
+  straight.x0 = (GAME_WIDTH / 2) - (SQUARE_WIDTH / 2);
   straight.y0 = GAME_HEIGHT - 51;
-  straight.width = 50;
+  straight.width = SQUARE_WIDTH;
   straight.height = 50;
   straight.isActive = true;
 
@@ -106,7 +106,7 @@ Piece spawnLeftTurn(void *buffer)
 
   Piece leftTurn = {};
   leftTurn.x0 = 175;
-  leftTurn.y0 = GAME_HEIGHT - 27;
+  leftTurn.y0 = GAME_HEIGHT - 26;
   leftTurn.width = 75;
   leftTurn.height = 50;
   leftTurn.isActive = true;

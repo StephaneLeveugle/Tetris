@@ -1,10 +1,15 @@
 #ifndef PIECE_HEADER
 #define PIECE_HEADER
 
+// colors
 #define LEFT_TURN_COLOR (255 << 16)
 #define STRAIGHT_COLOR (255 << 8 | 255)
 #define SQUARE_COLOR (255 << 16 | 255 << 8)
 #define UP_COLOR (191 << 16 | 255)
+
+// dimensions
+#define SQUARE_WIDTH 50
+#define STRAIGHT_WIDTH 100
 
 enum PieceType
 {

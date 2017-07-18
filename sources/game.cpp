@@ -28,7 +28,7 @@ void gameUpdate(void *buffer, GameControls gameControls)
     if(canActivePieceGoLeft(buffer))
     {
       int counter = 0;
-      while(counter < PIXELS_TO_MOVE && activePiece->x0 > 1)
+      while(counter < PIXELS_TO_MOVE && (activePiece->x0 > 1))
       {
         moveLeft(buffer);
         counter++;
@@ -65,6 +65,7 @@ void gameUpdate(void *buffer, GameControls gameControls)
 
   if(!canActivePieceMoveDown(buffer))
   {
+    uint32 *pixel = (uint32 *) buffer;
     setActivePieceToUnactive(buffer);
     clearFullLines(buffer);
     spawnNewPiece(buffer);
@@ -138,7 +139,7 @@ void gameInit(void *buffer)
     row += GAME_WIDTH * BYTE_PER_PIXEL;
   }
   
-  *activePiece = spawnUp(buffer);
+  *activePiece = spawnStraight(buffer);
 }
 
 

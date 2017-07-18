@@ -138,10 +138,14 @@ bool canActivePieceGoLeft(void *buffer)
   if(nbOfPixelsGoneThrough < activePiece->height)
   {
     pixel -= GAME_WIDTH;
-    nbOfPixelsGoneThrough--;
+    
 
     // move as far as possible to the right
     while(*(pixel + 1) == ACTIVE_PIECE_BORDER_COLOR) pixel++;
+    
+    // decrement ONLY if the piece continues upward
+    if(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) nbOfPixelsGoneThrough--;
+
     // try going up again
     while(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR)
     {
