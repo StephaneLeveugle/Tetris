@@ -21,6 +21,7 @@ bool canActivePieceMoveDown(void *buffer)
   {
     // go back once to the left
     pixel--;
+    nbOfPixelsGoneThrough--;
 
     // try to go down
     if(*(pixel - GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR)
@@ -53,45 +54,81 @@ bool canActivePieceMoveDown(void *buffer)
   return nbOfPixelsGoneThrough == activePiece->width;
 }
 
+//void moveDown(void *buffer)
+//{
+//  static uint64 nbOfCalls = 0;
+//
+//  uint8 *row = (uint8 *)buffer;
+//
+//  for(uint64 y = 0; y < GAME_HEIGHT; ++y)
+//  {
+//    uint32 *pixel = (uint32 *)row;
+//
+//    for(uint64 x = 0; x < GAME_WIDTH; ++x)
+//    {
+//      if(*pixel != GAME_BORDER_COLOR)
+//      {
+//        if(y > 1 && *pixel != VOID_COLOR)
+//        {
+//          if(*(pixel - GAME_WIDTH) == VOID_COLOR)
+//          {
+//            uint32 *start = pixel;
+//
+//            if(canPieceGoDown(&pixel, &x))
+//            {
+//              moveHorLineDown(start, pixel);
+//            }
+//          }
+//        }
+//      }
+//
+//      pixel++;
+//    }
+//
+//    row += GAME_WIDTH * BYTE_PER_PIXEL;
+//  }
+//
+//  activePiece->y0--;
+//
+//  nbOfCalls++;
+//}
+
 void moveDown(void *buffer)
 {
-  static uint64 nbOfCalls = 0;
-
-  uint8 *row = (uint8 *)buffer;
-
-  for(uint64 y = 0; y < GAME_HEIGHT; ++y)
+  if(canActivePieceMoveDown(buffer))
   {
-    uint32 *pixel = (uint32 *)row;
+    moveActivePieceDown(buffer);
+  }
+}
 
-    for(uint64 x = 0; x < GAME_WIDTH; ++x)
-    {
-      if(*pixel != GAME_BORDER_COLOR)
-      {
-        if(y > 1 && *pixel != VOID_COLOR)
-        {
-          if(*(pixel - GAME_WIDTH) == VOID_COLOR)
-          {
-            uint32 *start = pixel;
+void moveActivePieceDown(void *buffer)
+{
+  uint32 *pixel = goTo(buffer, activePiece->x0, activePiece->y0);
 
-            if(canPieceGoDown(&pixel, &x))
-            {
-              moveHorLineDown(start, pixel);
-            }
-          }
-        }
-      }
+  for(int i = 0; i < activePiece->width; i++)
+  {
+    // go as far as possible down
+    while(*(pixel - GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) pixel -= GAME_WIDTH;
 
-      pixel++;
-    }
-
-    row += GAME_WIDTH * BYTE_PER_PIXEL;
+    moveVertLineDown(pixel);
+    pixel++;
   }
 
   activePiece->y0--;
-
-  nbOfCalls++;
 }
 
+void moveVertLineDown(uint32 *start)
+{
+  uint32 *pixel = start;
+
+  // go up as long as we don't hit an empty pixel or a game border
+  while(*pixel != VOID_COLOR && *pixel != GAME_BORDER_COLOR)
+  {
+    *(pixel - GAME_WIDTH) = *pixel;
+    *pixel = VOID_COLOR;
+    pixel += GAME_WIDTH;
+  }
+}
 
 void moveLeft(void *buffer)
 {

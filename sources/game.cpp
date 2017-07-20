@@ -14,7 +14,8 @@
 // I think we should store it and treat it as a single block
 // we only keep track of the active piece + an array of blocks
 
-// 
+// Improve Left Turn, they don't pile up correctly
+// the bottom is 1px off
 
 #include "game.h"
 
@@ -139,7 +140,7 @@ void gameInit(void *buffer)
     row += GAME_WIDTH * BYTE_PER_PIXEL;
   }
   
-  *activePiece = spawnUp(buffer);
+  *activePiece = spawnLeftTurn(buffer);
 }
 
 

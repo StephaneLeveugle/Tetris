@@ -108,7 +108,7 @@ Piece spawnLeftTurn(void *buffer)
 
   Piece leftTurn = {};
   leftTurn.x0 = (GAME_WIDTH / 2) - 25;
-  leftTurn.y0 = GAME_HEIGHT - 26;
+  leftTurn.y0 = GAME_HEIGHT - 27;
   leftTurn.width = LEFT_TURN_WIDTH;
   leftTurn.height = 50;
   leftTurn.isActive = true;
@@ -120,7 +120,7 @@ void spawnNewPiece(void *buffer)
   static uint64 nbOfCalls = 0;
   Piece newPiece = {};
 
-  if(nbOfCalls++ % 5 == 0)
+  /*if(nbOfCalls++ % 5 == 0)
   {
     newPiece = spawnSquare(buffer);
   }
@@ -135,7 +135,8 @@ void spawnNewPiece(void *buffer)
   else if(nbOfCalls % 2 == 0)
   {
     newPiece = spawnUp(buffer);
-  }
+  }*/
+  newPiece = spawnLeftTurn(buffer);
 
   *activePiece = newPiece;
 }
