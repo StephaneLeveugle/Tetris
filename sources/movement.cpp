@@ -173,11 +173,11 @@ bool canActivePieceGoLeft(void *buffer)
   if(nbOfPixelsGoneThrough < activePiece->height)
   {
     pixel -= GAME_WIDTH;
-    
+
 
     // move as far as possible to the right
     while(*(pixel + 1) == ACTIVE_PIECE_BORDER_COLOR) pixel++;
-    
+
     // decrement ONLY if the piece continues upward
     //if(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) nbOfPixelsGoneThrough--;
 
@@ -253,7 +253,7 @@ void moveRight(void *buffer)
 
           // we now are on the right side of active piece
           // perform the move while going back to the left
-          while(*pixel > MIN_ACTIVE_PIECE_BORDER_COLOR && canPieceGoRight(pixel))
+          while(*pixel > MIN_ACTIVE_PIECE_BORDER_COLOR && canActivePieceGoRight(pixel))
           {
             moveVertLineRight(pixel);
             pixel--;
@@ -281,19 +281,141 @@ void moveVertLineRight(uint32 *pixel)
   } while(*pixel != GAME_BORDER_COLOR && *pixel != VOID_COLOR);
 }
 
-bool canPieceGoRight(uint32 *pixel)
+bool canActivePieceGoRight(uint32 *pixel)
 {
-  bool canPieceGoRight = true;
+  /*bool canActivePieceGoRight = true;
   do
   {
     if(*(pixel + 1) != VOID_COLOR)
     {
-      canPieceGoRight = false;
+      canActivePieceGoRight = false;
     }
     pixel = pixel + GAME_WIDTH;
   } while(*pixel != GAME_BORDER_COLOR && *pixel != VOID_COLOR);
 
-  return canPieceGoRight;
+  return canActivePieceGoRight;*/
+
+  //uint32 *pixel = goTo(buffer, activePiece->x0, activePiece->y0);
+  //int nbOfPixelsGoneThrough = 0;
+
+  // go to the right edge
+  while(*(pixel + 1) == ACTIVE_PIECE_BORDER_COLOR) pixel++;
+  if(*(pixel + 1) == GAME_BORDER_COLOR) return false;
+  if(*(pixel + 1) != VOID_COLOR)
+  {
+    while(*(pixel - GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) pixel -= GAME_WIDTH;
+    while(*(pixel + 1) == ACTIVE_PIECE_BORDER_COLOR) pixel++;
+  }
+
+  if(*(pixel + 1) == GAME_BORDER_COLOR || *(pixel + 1) != VOID_COLOR)
+  {
+    return false;
+  }
+
+  // now we should be on the right side, we can begin checking
+  uint32* rightSideCheckPosition = pixel;
+  // go up, checking on the right for every pixel
+  int nbOfPixelsGoneThrough = 0;
+  while(*pixel == ACTIVE_PIECE_BORDER_COLOR)
+  {
+    if(*(pixel + 1) != VOID_COLOR)
+    {
+      return false;
+    }
+    pixel += GAME_WIDTH;
+    nbOfPixelsGoneThrough++;
+  }
+
+  // if we didn't finish (because of the piece shape)
+  if(nbOfPixelsGoneThrough < activePiece->height)
+  {
+    pixel -= GAME_WIDTH;
+
+    // move as far as possible to the left
+    while(*(pixel - 1) == ACTIVE_PIECE_BORDER_COLOR) pixel--;
+
+    // decrement ONLY if the piece continues upward
+    if(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) nbOfPixelsGoneThrough--;
+
+    // try going up again
+    while(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR)
+    {
+      pixel += GAME_WIDTH;
+      nbOfPixelsGoneThrough++;
+
+      if(*(pixel + 1) != VOID_COLOR)
+      {
+        return false;
+      }
+
+      // if it is still not finished
+      if(nbOfPixelsGoneThrough < activePiece->height)
+      {
+        // go back to the right edge
+        pixel = rightSideCheckPosition;
+      }
+    }
+  }
+
+  //// go up, checking on the left for every pixel
+  //while(*pixel == ACTIVE_PIECE_BORDER_COLOR)
+  //{
+  //  if(*(pixel - 1) != VOID_COLOR)
+  //  {
+  //    return false;
+  //  }
+  //  pixel += GAME_WIDTH;
+  //  nbOfPixelsGoneThrough++;
+  //}
+
+  //// if we didn't finish (because of the piece shape)
+  //if(nbOfPixelsGoneThrough < activePiece->height)
+  //{
+  //  pixel -= GAME_WIDTH;
+
+
+  //  // move as far as possible to the right
+  //  while(*(pixel + 1) == ACTIVE_PIECE_BORDER_COLOR) pixel++;
+
+  //  // decrement ONLY if the piece continues upward
+  //  //if(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) nbOfPixelsGoneThrough--;
+
+  //  // try going up again
+  //  while(*(pixel + GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR)
+  //  {
+  //    pixel += GAME_WIDTH;
+  //    nbOfPixelsGoneThrough++;
+
+  //    if(*(pixel - 1) != VOID_COLOR)
+  //    {
+  //      return false;
+  //    }
+  //  }
+
+  //  // if it is still not finished
+  //  if(nbOfPixelsGoneThrough < activePiece->height)
+  //  {
+  //    // go back to (x0, y0) and move as far as possible to the right
+  //    pixel = goTo(buffer, activePiece->x0, activePiece->y0);
+  //    while(*(pixel + 1) == ACTIVE_PIECE_BORDER_COLOR) pixel++;
+
+  //    // check on the left while going down
+  //    while(*(pixel - GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR)
+  //    {
+  //      pixel -= GAME_WIDTH;
+  //      nbOfPixelsGoneThrough++;
+
+  //      if(*(pixel - 1) != VOID_COLOR)
+  //      {
+  //        return false;
+  //      }
+  //    }
+  //  }
+  //}
+
+  //// nbOfPixelsGoneThrough is 25 with a left turn
+  //// line 183 is never hit
+  //return nbOfPixelsGoneThrough == activePiece->height;
 }
 
 

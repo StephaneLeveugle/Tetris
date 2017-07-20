@@ -91,9 +91,9 @@ void drawUp(void *buffer)
   // draw borders (from top to bottom)
   {
     // top border
-    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0 + 24, GAME_HEIGHT - 2, 25);
+    drawHorLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0 + 25, GAME_HEIGHT - 2, 25);
     // top left border
-    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0 + 24, GAME_HEIGHT - 2, -25);
+    drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0 + 25, GAME_HEIGHT - 3, -25);
     // top right border
     drawVertLine(buffer, ACTIVE_PIECE_BORDER_COLOR, upX0 + 49, GAME_HEIGHT - 2, -25);
     // middle borders
@@ -111,10 +111,10 @@ void drawUp(void *buffer)
     // upper part
     for(int i = 1; i < 25; i++)
     {
-      drawHorLine(buffer, UP_COLOR, upX0 + 25, GAME_HEIGHT - 2 - i, 24);
+      drawHorLine(buffer, UP_COLOR, upX0 + 26, GAME_HEIGHT - 2 - i, 23);
     }
     // middle line
-    drawHorLine(buffer, UP_COLOR, upX0 + 25, GAME_HEIGHT - 27, 24);
+    drawHorLine(buffer, UP_COLOR, upX0 + 26, GAME_HEIGHT - 27, 23);
     // lower part 
     for(int i = 1; i < 24; i++)
     {

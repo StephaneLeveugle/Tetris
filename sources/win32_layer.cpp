@@ -66,6 +66,12 @@ LRESULT CALLBACK win32_windowCallback(HWND hWindow, UINT uMsg, WPARAM wParam, LP
           return 0;
         }
 
+        case VK_ESCAPE:
+        {
+          global_isGameRunning = false;
+          return 0;
+        }
+
         default:
         {
           return DefWindowProcA(hWindow, uMsg, wParam, lParam);

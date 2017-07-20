@@ -4,7 +4,6 @@
 // - Add losing
 // - Add points
 // - Improve controls (track taps)
-// - Fix collisions (left turn seems to take 1 pixel more than it should in width)
 
 // if first piece (x0 + width) > second piece (x0)
 // then we've got a block
@@ -140,7 +139,7 @@ void gameInit(void *buffer)
     row += GAME_WIDTH * BYTE_PER_PIXEL;
   }
   
-  *activePiece = spawnLeftTurn(buffer);
+  *activePiece = spawnUp(buffer);
 }
 
 
