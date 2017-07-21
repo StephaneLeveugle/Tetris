@@ -38,9 +38,14 @@ void gameUpdate(void *buffer, GameControls gameControls)
   else if(gameControls.isRightPressed && !gameControls.isLeftPressed)
   {
     OutputDebugStringA("right pressed\n");
-    for(int i = 0; i < PIXELS_TO_MOVE; i++)
+    if(canActivePieceGoRight(buffer))
     {
-      moveRight(buffer);
+      int counter = 0;
+      while(counter < PIXELS_TO_MOVE && (activePiece->x0 < (GAME_WIDTH - 1)))
+      {
+        moveRight(buffer);
+        counter++;
+      }
     }
   }
 
@@ -139,14 +144,60 @@ void gameInit(void *buffer)
     row += GAME_WIDTH * BYTE_PER_PIXEL;
   }
   
-  *activePiece = spawnUp(buffer);
+  *activePiece = spawnSquare(buffer);
 }
 
 
-uint32* goTo(void *buffer, uint32 x, uint32 y)
+uint32 * goTo(void *buffer, uint32 x, uint32 y)
 {
-  uint32* pixel = (uint32 *) buffer;
+  uint32 *pixel = (uint32 *) buffer;
   pixel += (y * GAME_WIDTH) + x;
+  return pixel;
+}
+
+uint32 * goToXMax(void *buffer)
+{
+  uint32 *pixel = goTo(buffer, activePiece->x0 + activePiece->width, activePiece->y0);
+
+  // if we are on the border, just go as far as possible down
+  if(*pixel == ACTIVE_PIECE_BORDER_COLOR)
+  {
+    while(*(pixel - GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) pixel -= GAME_WIDTH;
+  }
+  else
+  {
+    uint32 *originalPosition = pixel;
+    bool isBorderFound = false;
+    int nbOfPixelsGoneThrough = 0;
+    
+    // look for the border downwards
+    while(!isBorderFound && nbOfPixelsGoneThrough < activePiece->height)
+    {
+      if(*pixel == ACTIVE_PIECE_BORDER_COLOR) isBorderFound = true;
+      else
+      {
+        pixel -= GAME_WIDTH;
+        nbOfPixelsGoneThrough++;
+      }
+    }
+
+    pixel = originalPosition;
+    nbOfPixelsGoneThrough = 0;
+    // look for the border upwards (if not already found)
+    while(!isBorderFound && nbOfPixelsGoneThrough < activePiece->height)
+    {
+      if(*pixel == ACTIVE_PIECE_BORDER_COLOR) isBorderFound = true;
+      else
+      {
+        pixel += GAME_WIDTH;
+        nbOfPixelsGoneThrough++;
+      }
+    }
+
+    // now go as far as possible down
+    while(*(pixel - GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) pixel -= GAME_WIDTH;  
+  }
+
   return pixel;
 }
 

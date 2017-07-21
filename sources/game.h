@@ -17,6 +17,7 @@ void eraseLine(uint32 *begin, uint32 *end);
 void gameInit(void *buffer);
 
 uint32* goTo(void *buffer, uint32 x, uint32 y);
+uint32* goToXMax(void *buffer);
 
 #include "movement.h"
 #include "draw.h"
