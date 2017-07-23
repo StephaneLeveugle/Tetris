@@ -120,7 +120,7 @@ void spawnNewPiece(void *buffer)
   static uint64 nbOfCalls = 0;
   Piece newPiece = {};
 
-  /*if(nbOfCalls++ % 5 == 0)
+  if(nbOfCalls++ % 5 == 0)
   {
     newPiece = spawnSquare(buffer);
   }
@@ -135,8 +135,8 @@ void spawnNewPiece(void *buffer)
   else if(nbOfCalls % 2 == 0)
   {
     newPiece = spawnUp(buffer);
-  }*/
-  newPiece = spawnSquare(buffer);
+  }
+  //newPiece = spawnSquare(buffer);
 
   *activePiece = newPiece;
 }

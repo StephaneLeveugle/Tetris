@@ -113,7 +113,7 @@ LRESULT CALLBACK win32_windowCallback(HWND hWindow, UINT uMsg, WPARAM wParam, LP
       PAINTSTRUCT ps;
       HDC hdc = BeginPaint(hWindow, &ps);
 
-      FillRect(hdc, &ps.rcPaint, CreateSolidBrush(RGB(255, 255, 255)));
+      FillRect(hdc, &ps.rcPaint, CreateSolidBrush(RGB(25, 25, 25)));
 
       /*RECT tile = {};
       tile.top = (SCREEN_HEIGHT / 2) - 10;

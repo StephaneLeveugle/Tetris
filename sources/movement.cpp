@@ -237,6 +237,8 @@ void moveRight(void *buffer)
   {
     // go as far as possible down
     while(*(pixel - GAME_WIDTH) == ACTIVE_PIECE_BORDER_COLOR) pixel -= GAME_WIDTH;
+    
+    uint32 *save = pixel;
     // move the vertical line to the left
     moveVertLineRight(pixel);
 
@@ -244,7 +246,10 @@ void moveRight(void *buffer)
     if(i < (activePiece->width - 1))
     {
       // go up while next pixel to the left isn't ACTIVE_PIECE_BORDER_COLOR
-      while(*(pixel - 1) != ACTIVE_PIECE_BORDER_COLOR) pixel += GAME_WIDTH;
+      while(*(pixel - 1) != ACTIVE_PIECE_BORDER_COLOR) 
+      {
+        pixel += GAME_WIDTH;
+      }
     }
     pixel--;
   }

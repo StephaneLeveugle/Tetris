@@ -157,7 +157,7 @@ uint32 * goTo(void *buffer, uint32 x, uint32 y)
 
 uint32 * goToXMax(void *buffer)
 {
-  uint32 *pixel = goTo(buffer, activePiece->x0 + activePiece->width, activePiece->y0);
+  uint32 *pixel = goTo(buffer, activePiece->x0 + (activePiece->width - 1), activePiece->y0);
 
   // if we are on the border, just go as far as possible down
   if(*pixel == ACTIVE_PIECE_BORDER_COLOR)
