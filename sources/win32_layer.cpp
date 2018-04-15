@@ -1,242 +1,183 @@
 #include <Windows.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-typedef int8_t int8;
-typedef int16_t int16;
-typedef int32_t int32;
-typedef int64_t int64;
+typedef int8_t s8;
+typedef int16_t s16;
+typedef int32_t s32;
+typedef int64_t s64;
 
-typedef uint8_t uint8;
-typedef uint16_t uint16;
-typedef uint32_t uint32;
-typedef uint64_t uint64;
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
 
-#define SCREEN_WIDTH 1920
-#define SCREEN_HEIGHT 1080
-#define GAME_WIDTH 402 // 2pixels of border (1left 1 right)
-#define GAME_HEIGHT 800 // 2pixels of border (1top 1bottom)
+#define SCREEN_HEIGHT 1000
+#define SCREEN_WIDTH 500
+#define GAME_HEIGHT 1000
+#define GAME_WIDTH 500
 
-static void *buffer;
-static bool global_isGameRunning = true;
+struct GameControls {
+    bool isRightPressed, isLeftPressed, isDownPressed;
+};
+
+static GameControls gameControls = {};
+static bool isGameRunning = true;
+static u32 *buffer;
 
 #include "game.cpp"
 
-
-static GameControls gameControls = {};
-
-// TODO: Use own buffer and display it with StretchDIBits 
-
-LRESULT CALLBACK win32_windowCallback(HWND hWindow, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-  switch(uMsg)
-  {
-
-    case WM_QUIT:
-    {
-      global_isGameRunning = false;
-      return 0;
-    }
-
-    case WM_DESTROY:
-    {
-      global_isGameRunning = false;
-      PostQuitMessage(0);
-      return 0;
-    }
-
-    case WM_KEYDOWN:
-    {
-      switch(wParam)
-      {
-        case VK_LEFT:
-        {
-          gameControls.isLeftPressed = true;
-          return 0;
-        }
-
-        case VK_RIGHT:
-        {
-          gameControls.isRightPressed = true;
-          return 0;
-        }
-
-        case VK_DOWN:
-        {
-          gameControls.isDownPressed = true;
-          return 0;
-        }
-
-        case VK_ESCAPE:
-        {
-          global_isGameRunning = false;
-          return 0;
-        }
-
-        default:
-        {
-          return DefWindowProcA(hWindow, uMsg, wParam, lParam);
-        }
-      }
-    }
-
-    case WM_KEYUP:
-    {
-      switch(wParam)
-      {
-        case VK_LEFT:
-        {
-          gameControls.isLeftPressed = false;
-          return 0;
-        }
-
-        case VK_RIGHT:
-        {
-          gameControls.isRightPressed = false;
-          return 0;
-        }
-
-        case VK_DOWN:
-        {
-          gameControls.isDownPressed = false;
-          return 0;
-        }
-
-        default:
-        {
-          return DefWindowProcA(hWindow, uMsg, wParam, lParam);
-        }
-      }
-    }
+LRESULT CALLBACK win32_windowCallback(HWND hWindow, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     
-    case WM_PAINT:
-    {
-      PAINTSTRUCT ps;
-      HDC hdc = BeginPaint(hWindow, &ps);
+    switch(uMsg) {
 
-      FillRect(hdc, &ps.rcPaint, CreateSolidBrush(RGB(25, 25, 25)));
+        case WM_QUIT: {
+            isGameRunning = false;
+            return 0;
+        }
 
-      /*RECT tile = {};
-      tile.top = (SCREEN_HEIGHT / 2) - 10;
-      tile.bottom = (SCREEN_HEIGHT / 2) + 10;
-      tile.left = (SCREEN_WIDTH / 2) - 10;
-      tile.right = (SCREEN_WIDTH / 2) + 10;
+        case WM_DESTROY: {
+            isGameRunning = false;
+            PostQuitMessage(0);
+            return 0;
+        }
 
-      FillRect(hdc, &tile, CreateSolidBrush(RGB(0, 255, 255)));
+        case WM_KEYDOWN: {
+            switch(wParam) {
+                case VK_LEFT: {
+                    gameControls.isLeftPressed = true;
+                    return 0;
+                }
 
-      POINT points[4];
-      points[0].x = 10;
-      points[0].y = 10;
-      
-      points[1].x = 20;
-      points[1].y = 10;
-      
-      points[2].x = 20;
-      points[2].y = 20;
+                case VK_RIGHT: {
+                    gameControls.isRightPressed = true;
+                    return 0;
+                }
 
-      points[3].x = 10;
-      points[3].y = 20;
-    
-      if(Polygon(hdc, points, sizeof(points) / sizeof(POINT)))
-      {
-        OutputDebugStringA("polygon drawn");
-        HRGN polyRgn = CreatePolygonRgn(points, sizeof(points) / sizeof(POINT), WINDING);
-        FillRgn(hdc, polyRgn, CreateSolidBrush(RGB(255, 0, 0)));
-      }*/
+                case VK_DOWN: {
+                    gameControls.isDownPressed = true;
+                    return 0;
+                }
 
-      EndPaint(hWindow, &ps);
-      return 0; 
+                case VK_ESCAPE: {
+                    isGameRunning = false;
+                    return 0;
+                }
+
+                default: {
+                    return DefWindowProcA(hWindow, uMsg, wParam, lParam);
+                }
+            }
+        }
+
+        case WM_KEYUP: {
+            switch(wParam) {
+                case VK_LEFT: {
+                    gameControls.isLeftPressed = false;
+                    return 0;
+                }
+
+                case VK_RIGHT: {
+                    gameControls.isRightPressed = false;
+                    return 0;
+                }
+
+                case VK_DOWN: {
+                    gameControls.isDownPressed = false;
+                    return 0;
+                }
+
+                default: {
+                    return DefWindowProcA(hWindow, uMsg, wParam, lParam);
+                }
+            }
+        }
+
+        case WM_PAINT:
+        default: {
+            return DefWindowProcA(hWindow, uMsg, wParam, lParam);
+        }
     }
-    default:
-    {
-      return DefWindowProcA(hWindow, uMsg, wParam, lParam);
-    }
-  }
 }
 
-void win32_displayGame(HDC hdc, void *buffer, BITMAPINFO bitmapInfo)
-{
-  StretchDIBits(hdc, 
-                (SCREEN_WIDTH * (3.0f / 4.0f)) - (GAME_WIDTH / 2),
-                (SCREEN_HEIGHT / 2) - (GAME_HEIGHT / 2),
-                GAME_WIDTH, GAME_HEIGHT,
-                0, 0,
-                GAME_WIDTH, GAME_HEIGHT,
+void win32_displayGame(HDC hdc, void *buffer, BITMAPINFO bitmapInfo) {
+    StretchDIBits(hdc, 
+                0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
+                0, 0, GAME_WIDTH, GAME_HEIGHT,
                 buffer, &bitmapInfo,
                 DIB_RGB_COLORS, SRCCOPY);
 }
 
-void resetControls(GameControls *gameControls)
-{
-  gameControls->isDownPressed = false;
-  gameControls->isLeftPressed = false;
-  gameControls->isRightPressed = false;
-}
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int nCmdShow) {
+    // register the window class
+    WNDCLASSA windowClass = {};
+    windowClass.lpfnWndProc = win32_windowCallback;
+    windowClass.hInstance = hInstance;
+    windowClass.lpszClassName = "Tetris";
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int nCmdShow)
-{
-  // register the window class
-  WNDCLASSA windowClass = {};
-  windowClass.lpfnWndProc = win32_windowCallback;
-  windowClass.hInstance = hInstance;
-  windowClass.lpszClassName = "Fucking Tetris";
-  
-  RegisterClassA(&windowClass);
+    RegisterClassA(&windowClass);
 
-  // create the window
-  HWND hWindow = CreateWindowExA(0, windowClass.lpszClassName, "Fuuuuuuuuuucking Tetris", WS_OVERLAPPEDWINDOW, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr, nullptr, hInstance, nullptr);
+    // create the window
+    HWND hWindow = CreateWindowExA(0, windowClass.lpszClassName, "Tetris", WS_OVERLAPPEDWINDOW, 0, 0, SCREEN_WIDTH + 50, SCREEN_HEIGHT + 50, nullptr, nullptr, hInstance, nullptr);
 
-  if(!hWindow)
-  {
-    // TODO: Log error
-    return -1;
-  }
+    if (!hWindow) {
+        // TODO: Log error
+        return -1;
+    }
 
-  buffer = calloc(GAME_WIDTH * GAME_HEIGHT, sizeof(uint32));
-  
-  BITMAPINFO bitmapInfo = {};
-  bitmapInfo.bmiHeader.biSize = sizeof(bitmapInfo.bmiHeader);
-  bitmapInfo.bmiHeader.biWidth = GAME_WIDTH;
-  bitmapInfo.bmiHeader.biHeight = GAME_HEIGHT;
-  bitmapInfo.bmiHeader.biPlanes = 1;
-  bitmapInfo.bmiHeader.biBitCount = 32;
-  bitmapInfo.bmiHeader.biCompression = BI_RGB;
+    buffer = (u32 *) calloc(GAME_WIDTH * GAME_HEIGHT, sizeof(u32));
 
-  ShowWindow(hWindow, nCmdShow);
+    BITMAPINFO bitmapInfo = {};
+    bitmapInfo.bmiHeader.biSize = sizeof(bitmapInfo.bmiHeader);
+    bitmapInfo.bmiHeader.biWidth = GAME_WIDTH;
+    bitmapInfo.bmiHeader.biHeight = GAME_HEIGHT;
+    bitmapInfo.bmiHeader.biPlanes = 1;
+    bitmapInfo.bmiHeader.biBitCount = 32;
+    bitmapInfo.bmiHeader.biCompression = BI_RGB;
 
-  HDC hdc = GetDC(hWindow);
+    ShowWindow(hWindow, nCmdShow);
 
-  gameInit(buffer);
+    HDC hdc = GetDC(hWindow);
 
-  uint64 lastFrameTime = 0;
-  uint64 currentFrameTime = 0;
+    gameInit(buffer);
 
-  while(global_isGameRunning)
-  {
-    //resetControls(&gameControls);
-    // run the message loop
+    u64 lastFrameTime = 0;
+    u64 currentFrameTime = 0;
+
     MSG msg = {};
-    while(PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE))
-    {
-      TranslateMessage(&msg);
-      DispatchMessageA(&msg);
-    }
-    
-    currentFrameTime = GetTickCount64();
-
-    if((currentFrameTime - lastFrameTime) > 125)
-    {
-      // TODO: remember to swap them, gameUpdate should go first
-      win32_displayGame(hdc, buffer, bitmapInfo);
-      gameUpdate(buffer, gameControls);
-
-      lastFrameTime = currentFrameTime;
-    }
-
-//
-    // Sleep(100);
-  }
+    while (isGameRunning) {
+        msg = {};
+        while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE)) {
+            TranslateMessage(&msg);
+            DispatchMessageA(&msg);
+        }
  
-  ReleaseDC(hWindow, hdc);
+        LARGE_INTEGER freq;
+        LARGE_INTEGER t1, t2;
+        double elapsedTime;
 
-  return 0;
+        QueryPerformanceFrequency(&freq);
+        QueryPerformanceCounter(&t1);
+
+        win32_displayGame(hdc, buffer, bitmapInfo);
+        gameUpdate(buffer, gameControls);
+
+        QueryPerformanceCounter(&t2);
+        u64 timeElapsed = ((t2.QuadPart - t1.QuadPart) * 1000) / freq.QuadPart;
+        char timeElapsedStr[256];
+        sprintf(timeElapsedStr, "time elapsed in ms : %llu\n", timeElapsed);
+        OutputDebugStringA(timeElapsedStr);
+        s64 sleepTime = 500 - (s64)timeElapsed;
+        if (sleepTime > 2) {
+            if (gameControls.isLeftPressed || gameControls.isRightPressed) sleepTime /= 5;
+            if (gameControls.isDownPressed) sleepTime /= 10;
+            Sleep(sleepTime);
+        }
+    }
+
+    ReleaseDC(hWindow, hdc);
+
+    return 0;
 }
