@@ -19,15 +19,12 @@ typedef uint64_t u64;
 #define GAME_HEIGHT 1000
 #define GAME_WIDTH 500
 
-struct GameControls {
-    bool isRightPressed, isLeftPressed, isDownPressed;
-};
+#include "game.cpp"
 
 static GameControls gameControls = {};
 static bool isGameRunning = true;
 static u32 *buffer;
 
-#include "game.cpp"
 
 LRESULT CALLBACK win32_windowCallback(HWND hWindow, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     
@@ -61,6 +58,11 @@ LRESULT CALLBACK win32_windowCallback(HWND hWindow, UINT uMsg, WPARAM wParam, LP
                     return 0;
                 }
 
+                case VK_UP: {
+                    gameControls.isUpPressed = true;
+                    return 0;
+                }
+
                 case VK_ESCAPE: {
                     isGameRunning = false;
                     return 0;
@@ -76,16 +78,25 @@ LRESULT CALLBACK win32_windowCallback(HWND hWindow, UINT uMsg, WPARAM wParam, LP
             switch(wParam) {
                 case VK_LEFT: {
                     gameControls.isLeftPressed = false;
+                    gameControls.wasLeftPressed = false;
                     return 0;
                 }
 
                 case VK_RIGHT: {
                     gameControls.isRightPressed = false;
+                    gameControls.wasRightPressed = false;
                     return 0;
                 }
 
                 case VK_DOWN: {
                     gameControls.isDownPressed = false;
+                    gameControls.wasDownPressed = false;
+                    return 0;
+                }
+
+                case VK_UP: {
+                    gameControls.isUpPressed = false;
+                    gameControls.wasUpPressed = false;
                     return 0;
                 }
 
@@ -147,6 +158,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
     u64 currentFrameTime = 0;
 
     MSG msg = {};
+    double timeIdle = 0;
+    LARGE_INTEGER freq;
+    LARGE_INTEGER oldTime, time, beginFrameTime;
+    QueryPerformanceFrequency(&freq);
+    double pcfreq = ((double) freq.QuadPart) / 1000.0;
+    QueryPerformanceCounter(&oldTime);
     while (isGameRunning) {
         msg = {};
         while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE)) {
@@ -154,27 +171,36 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
             DispatchMessageA(&msg);
         }
  
-        LARGE_INTEGER freq;
-        LARGE_INTEGER t1, t2;
-        double elapsedTime;
-
-        QueryPerformanceFrequency(&freq);
-        QueryPerformanceCounter(&t1);
+        QueryPerformanceCounter(&beginFrameTime);
 
         win32_displayGame(hdc, buffer, bitmapInfo);
-        gameUpdate(buffer, gameControls);
+        gameUpdate(buffer, &gameControls, &timeIdle);
 
-        QueryPerformanceCounter(&t2);
-        u64 timeElapsed = ((t2.QuadPart - t1.QuadPart) * 1000) / freq.QuadPart;
-        char timeElapsedStr[256];
-        sprintf(timeElapsedStr, "time elapsed in ms : %llu\n", timeElapsed);
-        OutputDebugStringA(timeElapsedStr);
-        s64 sleepTime = 500 - (s64)timeElapsed;
-        if (sleepTime > 2) {
-            if (gameControls.isLeftPressed || gameControls.isRightPressed) sleepTime /= 5;
-            if (gameControls.isDownPressed) sleepTime /= 10;
-            Sleep(sleepTime);
+        if (gameControls.isDownPressed && !gameControls.wasDownPressed) gameControls.wasDownPressed = true;
+        if (gameControls.isUpPressed && !gameControls.wasUpPressed) gameControls.wasUpPressed = true;
+        if (gameControls.isLeftPressed && !gameControls.wasLeftPressed) gameControls.wasLeftPressed = true;
+        if (gameControls.isRightPressed && !gameControls.wasRightPressed) gameControls.wasRightPressed = true;
+
+        QueryPerformanceCounter(&time);
+        if (timeIdle == 0) {
+            OutputDebugStringA("Time reset\n");
+            oldTime = time;
+            timeIdle = ((double) (time.QuadPart - beginFrameTime.QuadPart) / pcfreq);
+        } else {
+            timeIdle = ((double) (time.QuadPart - oldTime.QuadPart) / pcfreq);
         }
+
+        char debugString[1000];
+        sprintf(debugString, "Time idle : %lf\n", timeIdle);
+        OutputDebugStringA(debugString);
+        
+        // OutputDebugStringA(timeElapsedStr);
+        // s64 sleepTime = 500 - (s64)timeElapsed;
+        // if (sleepTime > 2) {
+        //     if (gameControls.isLeftPressed || gameControls.isRightPressed) sleepTime /= 5;
+        //     if (gameControls.isDownPressed) sleepTime /= 10;
+        //     Sleep(sleepTime);
+        // }
     }
 
     ReleaseDC(hWindow, hdc);
