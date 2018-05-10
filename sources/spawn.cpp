@@ -45,7 +45,7 @@ void spawnO(u16 startX = ((GAME_WIDTH/2)-BSIZE), u16 startY = GAME_HEIGHT-(2*BSI
     tetromino.blocks[3] = spawnBlock(startX + BSIZE, startY + BSIZE, yellow);
 }
 
-void spawnT(u16 startX = ((GAME_WIDTH/2)-(2*BSIZE)), u16 startY = GAME_HEIGHT - (2*BSIZE)) {
+void spawnT(u16 startX = ((GAME_WIDTH/2)-(BSIZE)), u16 startY = GAME_HEIGHT - (2*BSIZE)) {
     const u32 purple = 0x00800080;
     tetromino.color = purple;
     tetromino.type = TetrominoType::T;
@@ -55,7 +55,7 @@ void spawnT(u16 startX = ((GAME_WIDTH/2)-(2*BSIZE)), u16 startY = GAME_HEIGHT - 
     tetromino.blocks[3] = spawnBlock(startX + 2*BSIZE, startY, purple);
 }
 
-void spawnL(u16 startX = ((GAME_WIDTH/2)-(2*BSIZE)), u16 startY = GAME_HEIGHT-(2*BSIZE)) {
+void spawnL(u16 startX = ((GAME_WIDTH/2)-(BSIZE)), u16 startY = GAME_HEIGHT-(2*BSIZE)) {
     const u32 orange = 0x00FFA500;
     tetromino.color = orange;
     tetromino.type = TetrominoType::L;
@@ -65,7 +65,7 @@ void spawnL(u16 startX = ((GAME_WIDTH/2)-(2*BSIZE)), u16 startY = GAME_HEIGHT-(2
     tetromino.blocks[3] = spawnBlock(startX + 2*BSIZE, startY + BSIZE, orange);
 }
 
-void spawnJ(u16 startX = ((GAME_WIDTH/2)-(2*BSIZE)), u16 startY = GAME_HEIGHT-(2*BSIZE)) {
+void spawnJ(u16 startX = ((GAME_WIDTH/2)-(BSIZE)), u16 startY = GAME_HEIGHT-(2*BSIZE)) {
     const u32 blue = 0x000000FF;
     tetromino.color = blue;
     tetromino.type = TetrominoType::J;
@@ -75,17 +75,17 @@ void spawnJ(u16 startX = ((GAME_WIDTH/2)-(2*BSIZE)), u16 startY = GAME_HEIGHT-(2
     tetromino.blocks[3] = spawnBlock(startX+(2*BSIZE), startY, blue);
 }
 
-void spawnZ(u16 startX = ((GAME_WIDTH/2)-(2*BSIZE)), u16 startY = GAME_HEIGHT-BSIZE) {
+void spawnZ(u16 startX = ((GAME_WIDTH/2)-(BSIZE)), u16 startY = GAME_HEIGHT-2*BSIZE) {
     const u32 red = 0x00FF0000;
     tetromino.color = red;
     tetromino.type = TetrominoType::Z;
     tetromino.blocks[0] = spawnBlock(startX, startY, red);
     tetromino.blocks[1] = spawnBlock(startX+BSIZE, startY, red);
-    tetromino.blocks[2] = spawnBlock(startX+BSIZE, startY-BSIZE, red);
-    tetromino.blocks[3] = spawnBlock(startX+(2*BSIZE), startY - BSIZE, red);
+    tetromino.blocks[2] = spawnBlock(startX-BSIZE, startY+BSIZE, red);
+    tetromino.blocks[3] = spawnBlock(startX, startY+BSIZE, red);
 }
 
-void spawnS(u16 startX = ((GAME_WIDTH/2)-(2*BSIZE)), u16 startY = GAME_HEIGHT-(2*BSIZE)) {
+void spawnS(u16 startX = ((GAME_WIDTH/2)-(BSIZE)), u16 startY = GAME_HEIGHT-(2*BSIZE)) {
     const u32 green = 0x0000FF00;
     tetromino.color = green;
     tetromino.type = TetrominoType::S;
@@ -98,7 +98,6 @@ void spawnS(u16 startX = ((GAME_WIDTH/2)-(2*BSIZE)), u16 startY = GAME_HEIGHT-(2
 void spawnAny() {
     tetromino = {};
     int n = rand() % 7;
-    n = 4; // test
     switch (n) {
         case 0: spawnI(); break;
         case 1: spawnO(); break;

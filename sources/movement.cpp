@@ -13,7 +13,6 @@ bool canMoveDown() {
 }
 
 void moveDown() {
-    OutputDebugStringA("Move down\n");
     for (u16 i = 0; i < GAME_HEIGHT; i++) {
         for (u16 j = 0; j < GAME_WIDTH; j++) {
             if (pxl.isActive) {
@@ -96,10 +95,10 @@ bool rotate() {
             switch (tetromino.rotation % 4) {
                 case 0: {
                     if (y >= (2*BSIZE) && y <= (GAME_HEIGHT-(2*BSIZE))
-                        && (pixels[x+2*BSIZE][y+BSIZE].isActive || pixels[x+2*BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x+2*BSIZE][y].isActive || pixels[x+2*BSIZE][y].isEmpty)
-                        && (pixels[x+2*BSIZE][y-BSIZE].isActive || pixels[x+2*BSIZE][y-BSIZE].isEmpty)
-                        && (pixels[x+2*BSIZE][y-2*BSIZE].isActive || pixels[x+2*BSIZE][y-2*BSIZE].isEmpty)) {
+                        && (pixels[y+BSIZE][x+2*BSIZE].isActive || pixels[y+BSIZE][x+2*BSIZE].isEmpty)
+                        && (pixels[y][x+2*BSIZE].isActive || pixels[y][x+2*BSIZE].isEmpty)
+                        && (pixels[y-BSIZE][x+2*BSIZE].isActive || pixels[y-BSIZE][x+2*BSIZE].isEmpty)
+                        && (pixels[y-2*BSIZE][x+2*BSIZE].isActive || pixels[y-2*BSIZE][x+2*BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x+2*BSIZE, y-2*BSIZE, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x+2*BSIZE, y-BSIZE, tetromino.color);
@@ -110,10 +109,10 @@ bool rotate() {
                 } break;
                 case 1: {
                     if (x >= (2*BSIZE) && x <= (GAME_WIDTH-(2*BSIZE))
-                        && (pixels[x-2*BSIZE][y+BSIZE].isActive || pixels[x-2*BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x-BSIZE][y+BSIZE].isActive || pixels[x-BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x][y+BSIZE].isActive || pixels[x][y+BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+BSIZE].isActive || pixels[x+BSIZE][y+BSIZE].isEmpty)) {
+                        && (pixels[y+BSIZE][x-2*BSIZE].isActive || pixels[y+BSIZE][x-2*BSIZE].isEmpty)
+                        && (pixels[y+BSIZE][x-BSIZE].isActive || pixels[y+BSIZE][x-BSIZE].isEmpty)
+                        && (pixels[y+BSIZE][x].isActive || pixels[y+BSIZE][x].isEmpty)
+                        && (pixels[y+BSIZE][x+BSIZE].isActive || pixels[y+BSIZE][x+BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x-2*BSIZE, y+BSIZE, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x-BSIZE, y+BSIZE, tetromino.color);
@@ -124,10 +123,10 @@ bool rotate() {
                 } break;
                 case 2: {
                     if (y >= BSIZE && y <= (GAME_HEIGHT-(3*BSIZE))
-                        && (pixels[x+BSIZE][y-BSIZE].isActive || pixels[x+BSIZE][y-BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y].isActive || pixels[x+BSIZE][y].isEmpty)
-                        && (pixels[x+BSIZE][y+BSIZE].isActive || pixels[x+BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+2*BSIZE].isActive || pixels[x+BSIZE][y+2*BSIZE].isEmpty)) {
+                        && (pixels[y-BSIZE][x+BSIZE].isActive || pixels[y-BSIZE][x+BSIZE].isEmpty)
+                        && (pixels[y][x+BSIZE].isActive || pixels[y][x+BSIZE].isEmpty)
+                        && (pixels[y+BSIZE][x+BSIZE].isActive || pixels[y+BSIZE][x+BSIZE].isEmpty)
+                        && (pixels[y+2*BSIZE][x+BSIZE].isActive || pixels[y+2*BSIZE][x+BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x+BSIZE, y-BSIZE, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x+BSIZE, y, tetromino.color);
@@ -138,10 +137,10 @@ bool rotate() {
                 } break;
                 case 3: {
                     if (x >= BSIZE && x <= (GAME_WIDTH-(3*BSIZE))
-                        && (pixels[x-BSIZE][y+2*BSIZE].isActive || pixels[x-BSIZE][y+2*BSIZE].isEmpty)
-                        && (pixels[x][y+2*BSIZE].isActive || pixels[x][y+2*BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+2*BSIZE].isActive || pixels[x+BSIZE][y+2*BSIZE].isEmpty)
-                        && (pixels[x+2*BSIZE][y+2*BSIZE].isActive || pixels[x+2*BSIZE][y+2*BSIZE].isEmpty)) {
+                        && (pixels[y+2*BSIZE][x-BSIZE].isActive || pixels[y+2*BSIZE][x-BSIZE].isEmpty)
+                        && (pixels[y+2*BSIZE][x].isActive || pixels[y+2*BSIZE][x].isEmpty)
+                        && (pixels[y+2*BSIZE][x+BSIZE].isActive || pixels[y+2*BSIZE][x+BSIZE].isEmpty)
+                        && (pixels[y+2*BSIZE][x+2*BSIZE].isActive || pixels[y+2*BSIZE][x+2*BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x-BSIZE, y+2*BSIZE, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x, y+2*BSIZE, tetromino.color);
@@ -159,7 +158,7 @@ bool rotate() {
             switch (tetromino.rotation % 4) {
                 case 0: {
                     if (y >= BSIZE
-                        && (pixels[x+BSIZE][y-BSIZE].isActive || pixels[x+BSIZE][y-BSIZE].isEmpty)) {
+                        && (pixels[y-BSIZE][x+BSIZE].isActive || pixels[y-BSIZE][x+BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x+BSIZE, y-BSIZE, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x+BSIZE, y, tetromino.color);
@@ -170,7 +169,7 @@ bool rotate() {
                 } break;
                 case 1: {
                     if (x >= BSIZE
-                        && (pixels[x-BSIZE][y+BSIZE].isActive || pixels[x-BSIZE][y+BSIZE].isEmpty)) {
+                        && (pixels[y+BSIZE][x-BSIZE].isActive || pixels[y+BSIZE][x-BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x, y, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x-BSIZE, y+BSIZE, tetromino.color);
@@ -181,7 +180,7 @@ bool rotate() {
                 } break;
                 case 2: {
                     if (y <= (GAME_HEIGHT-BSIZE)
-                        && (pixels[x][y+2*BSIZE].isActive || pixels[x][y+2*BSIZE].isEmpty)) {
+                        && (pixels[y+2*BSIZE][x].isActive || pixels[y+2*BSIZE][x].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x, y, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x-BSIZE, y+BSIZE, tetromino.color);
@@ -192,7 +191,7 @@ bool rotate() {
                 } break;
                 case 3: {
                     if (x <= (GAME_WIDTH-2*BSIZE)
-                        && (pixels[x+BSIZE][y+BSIZE].isActive || pixels[x+BSIZE][y+BSIZE].isEmpty)) {
+                        && (pixels[y+BSIZE][x+BSIZE].isActive || pixels[y+BSIZE][x+BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x-BSIZE, y+BSIZE, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x, y+BSIZE, tetromino.color);
@@ -208,9 +207,9 @@ bool rotate() {
             switch (tetromino.rotation % 4) {
                 case 0: {
                     if (y >= BSIZE
-                        && (pixels[x+BSIZE][y-BSIZE].isActive || pixels[x+BSIZE][y-BSIZE].isEmpty)
-                        && (pixels[x+2*BSIZE][y-BSIZE].isActive || pixels[x+2*BSIZE][y-BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+BSIZE].isActive || pixels[x+BSIZE][y+BSIZE].isEmpty)) {
+                        && (pixels[y-BSIZE][x+BSIZE].isActive || pixels[y-BSIZE][x+BSIZE].isEmpty)
+                        && (pixels[y-BSIZE][x+2*BSIZE].isActive || pixels[y-BSIZE][x+2*BSIZE].isEmpty)
+                        && (pixels[y+BSIZE][x+BSIZE].isActive || pixels[y+BSIZE][x+BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x+BSIZE, y-BSIZE, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x+2*BSIZE, y-BSIZE, tetromino.color);
@@ -221,9 +220,9 @@ bool rotate() {
                 } break;
                 case 1: {
                     if (x >= BSIZE
-                        && (pixels[x-BSIZE][y].isActive || pixels[x-BSIZE][y].isEmpty)
-                        && (pixels[x-BSIZE][y+BSIZE].isActive || pixels[x-BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+BSIZE].isActive || pixels[x+BSIZE][y+BSIZE].isEmpty)) {
+                        && (pixels[y][x-BSIZE].isActive || pixels[y][x-BSIZE].isEmpty)
+                        && (pixels[y+BSIZE][x-BSIZE].isActive || pixels[y+BSIZE][x-BSIZE].isEmpty)
+                        && (pixels[y+BSIZE][x+BSIZE].isActive || pixels[y+BSIZE][x+BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x-BSIZE, y, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x-BSIZE, y+BSIZE, tetromino.color);
@@ -234,9 +233,9 @@ bool rotate() {
                 } break;
                 case 2: {
                     if (y <= (GAME_HEIGHT - 3*BSIZE)
-                        && (pixels[x+BSIZE][y].isActive || pixels[x+BSIZE][y].isEmpty)
-                        && (pixels[x+BSIZE][y+2*BSIZE].isActive || pixels[x+BSIZE][y+2*BSIZE].isEmpty)
-                        && (pixels[x][y+2*BSIZE].isActive || pixels[x][y+2*BSIZE].isEmpty)) {
+                        && (pixels[y][x+BSIZE].isActive || pixels[y][x+BSIZE].isEmpty)
+                        && (pixels[y+2*BSIZE][x+BSIZE].isActive || pixels[y+2*BSIZE][x+BSIZE].isEmpty)
+                        && (pixels[y+2*BSIZE][x].isActive || pixels[y+2*BSIZE][x].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x+BSIZE, y, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x+BSIZE, y+BSIZE, tetromino.color);
@@ -247,9 +246,9 @@ bool rotate() {
                 } break;
                 case 3: {
                     if (x <= (GAME_WIDTH-2*BSIZE)
-                        && (pixels[x-BSIZE][y+BSIZE].isActive || pixels[x-BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+BSIZE].isActive || pixels[x+BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+2*BSIZE].isActive || pixels[x+BSIZE][y+2*BSIZE].isEmpty)) {
+                        && (pixels[y+BSIZE][x-BSIZE].isActive || pixels[y+BSIZE][x-BSIZE].isEmpty)
+                        && (pixels[y+BSIZE][x+BSIZE].isActive || pixels[y+BSIZE][x+BSIZE].isEmpty)
+                        && (pixels[y+2*BSIZE][x+BSIZE].isActive || pixels[y+2*BSIZE][x+BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x-BSIZE, y+BSIZE, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x, y+BSIZE, tetromino.color);
@@ -265,9 +264,9 @@ bool rotate() {
             switch (tetromino.rotation % 4) {
                 case 0: {
                     if (y >= BSIZE
-                        && (pixels[x+BSIZE][y-BSIZE].isActive || pixels[x+BSIZE][y-BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+BSIZE].isActive || pixels[x+BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x+2*BSIZE][y+BSIZE].isActive || pixels[x+2*BSIZE][y+BSIZE].isEmpty)) {
+                        && (pixels[y-BSIZE][x+BSIZE].isActive || pixels[y-BSIZE][x+BSIZE].isEmpty)
+                        && (pixels[y+BSIZE][x+BSIZE].isActive || pixels[y+BSIZE][x+BSIZE].isEmpty)
+                        && (pixels[y+BSIZE][x+2*BSIZE].isActive || pixels[y+BSIZE][x+2*BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x+BSIZE, y-BSIZE, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x+BSIZE, y, tetromino.color);
@@ -278,9 +277,9 @@ bool rotate() {
                 } break;
                 case 1: {
                     if (x >= BSIZE
-                        && (pixels[x-BSIZE][y+BSIZE].isActive || pixels[x-BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+BSIZE].isActive || pixels[x+BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y].isActive || pixels[x+BSIZE][y].isEmpty)) {
+                        && (pixels[y+BSIZE][x-BSIZE].isActive || pixels[y+BSIZE][x-BSIZE].isEmpty)
+                        && (pixels[y+BSIZE][x+BSIZE].isActive || pixels[y+BSIZE][x+BSIZE].isEmpty)
+                        && (pixels[y][x+BSIZE].isActive || pixels[y][x+BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x+BSIZE, y, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x, y+BSIZE, tetromino.color);
@@ -291,9 +290,9 @@ bool rotate() {
                 } break;
                 case 2: {
                     if (y <= (GAME_HEIGHT - 3*BSIZE)
-                        && (pixels[x-2*BSIZE][y].isActive || pixels[x-2*BSIZE][y].isEmpty)
-                        && (pixels[x-BSIZE][y].isActive || pixels[x-BSIZE][y].isEmpty)
-                        && (pixels[x-BSIZE][y+2*BSIZE].isActive || pixels[x-BSIZE][y+2*BSIZE].isEmpty)) {
+                        && (pixels[y][x-2*BSIZE].isActive || pixels[y][x-2*BSIZE].isEmpty)
+                        && (pixels[y][x-BSIZE].isActive || pixels[y][x-BSIZE].isEmpty)
+                        && (pixels[y+2*BSIZE][x-BSIZE].isActive || pixels[y+2*BSIZE][x-BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x-2*BSIZE, y, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x-BSIZE, y, tetromino.color);
@@ -304,9 +303,9 @@ bool rotate() {
                 } break;
                 case 3: {
                     if (x <= (GAME_WIDTH-3*BSIZE)
-                        && (pixels[x][y+BSIZE].isActive || pixels[x][y+BSIZE].isEmpty)
-                        && (pixels[x+2*BSIZE][y+BSIZE].isActive || pixels[x+2*BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x][y+2*BSIZE].isActive || pixels[x][y+2*BSIZE].isEmpty)) {
+                        && (pixels[y+BSIZE][x].isActive || pixels[y+BSIZE][x].isEmpty)
+                        && (pixels[y+BSIZE][x+2*BSIZE].isActive || pixels[y+BSIZE][x+2*BSIZE].isEmpty)
+                        && (pixels[y+2*BSIZE][x].isActive || pixels[y+2*BSIZE][x].isEmpty)) {
                         clearTetrominoBlocks();
                         tetromino.blocks[0] = spawnBlock(x, y+BSIZE, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x+BSIZE, y+BSIZE, tetromino.color);
@@ -318,128 +317,110 @@ bool rotate() {
             }            
         } break;
 
-        // TODO
         case Z: {
             switch (tetromino.rotation % 4) {
                 case 0: {
-                    if (y >= (2*BSIZE) && y <= (GAME_HEIGHT-(2*BSIZE))
-                        && (pixels[x+2*BSIZE][y+BSIZE].isActive || pixels[x+2*BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x+2*BSIZE][y].isActive || pixels[x+2*BSIZE][y].isEmpty)
-                        && (pixels[x+2*BSIZE][y-BSIZE].isActive || pixels[x+2*BSIZE][y-BSIZE].isEmpty)
-                        && (pixels[x+2*BSIZE][y-2*BSIZE].isActive || pixels[x+2*BSIZE][y-2*BSIZE].isEmpty)) {
+                    if (y >= BSIZE
+                        && (pixels[y-BSIZE][x].isActive || pixels[y-BSIZE][x].isEmpty)
+                        && (pixels[y+BSIZE][x+BSIZE].isActive || pixels[y+BSIZE][x+BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
-                        tetromino.blocks[0] = spawnBlock(x+2*BSIZE, y-2*BSIZE, tetromino.color);
-                        tetromino.blocks[1] = spawnBlock(x+2*BSIZE, y-BSIZE, tetromino.color);
-                        tetromino.blocks[2] = spawnBlock(x+2*BSIZE, y, tetromino.color);
-                        tetromino.blocks[3] = spawnBlock(x+2*BSIZE, y+BSIZE, tetromino.color);
-                        tetromino.rotation++;
-                    }
-                } break;
-                case 1: {
-                    if (x >= (2*BSIZE) && x <= (GAME_WIDTH-(2*BSIZE))
-                        && (pixels[x-2*BSIZE][y+BSIZE].isActive || pixels[x-2*BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x-BSIZE][y+BSIZE].isActive || pixels[x-BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x][y+BSIZE].isActive || pixels[x][y+BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+BSIZE].isActive || pixels[x+BSIZE][y+BSIZE].isEmpty)) {
-                        clearTetrominoBlocks();
-                        tetromino.blocks[0] = spawnBlock(x-2*BSIZE, y+BSIZE, tetromino.color);
-                        tetromino.blocks[1] = spawnBlock(x-BSIZE, y+BSIZE, tetromino.color);
-                        tetromino.blocks[2] = spawnBlock(x, y+BSIZE, tetromino.color);
+                        tetromino.blocks[0] = spawnBlock(x, y-BSIZE, tetromino.color);
+                        tetromino.blocks[1] = spawnBlock(x, y, tetromino.color);
+                        tetromino.blocks[2] = spawnBlock(x+BSIZE, y, tetromino.color);
                         tetromino.blocks[3] = spawnBlock(x+BSIZE, y+BSIZE, tetromino.color);
                         tetromino.rotation++;
                     }
                 } break;
-                case 2: {
-                    if (y >= BSIZE && y <= (GAME_HEIGHT-(3*BSIZE))
-                        && (pixels[x+BSIZE][y-BSIZE].isActive || pixels[x+BSIZE][y-BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y].isActive || pixels[x+BSIZE][y].isEmpty)
-                        && (pixels[x+BSIZE][y+BSIZE].isActive || pixels[x+BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+2*BSIZE].isActive || pixels[x+BSIZE][y+2*BSIZE].isEmpty)) {
+                case 1: {
+                    if (x >= BSIZE
+                        && (pixels[y][x+BSIZE].isActive || pixels[y][x+BSIZE].isEmpty)
+                        && (pixels[y+BSIZE][x-BSIZE].isActive || pixels[y+BSIZE][x-BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
-                        tetromino.blocks[0] = spawnBlock(x+BSIZE, y-BSIZE, tetromino.color);
+                        tetromino.blocks[0] = spawnBlock(x, y, tetromino.color);
                         tetromino.blocks[1] = spawnBlock(x+BSIZE, y, tetromino.color);
-                        tetromino.blocks[2] = spawnBlock(x+BSIZE, y+BSIZE, tetromino.color);
-                        tetromino.blocks[3] = spawnBlock(x+BSIZE, y+2*BSIZE, tetromino.color);
+                        tetromino.blocks[2] = spawnBlock(x-BSIZE, y+BSIZE, tetromino.color);
+                        tetromino.blocks[3] = spawnBlock(x, y+BSIZE, tetromino.color);
+                        tetromino.rotation++;
+                    }
+                } break;
+                case 2: {
+                    if (y <= (GAME_HEIGHT-BSIZE)
+                        && (pixels[y][x-BSIZE].isActive || pixels[y][x-BSIZE].isEmpty)
+                        && (pixels[y+2*BSIZE][x].isActive || pixels[y+2*BSIZE][x].isEmpty)) {
+                        clearTetrominoBlocks();
+                        tetromino.blocks[0] = spawnBlock(x-BSIZE, y, tetromino.color);
+                        tetromino.blocks[1] = spawnBlock(x-BSIZE, y+BSIZE, tetromino.color);
+                        tetromino.blocks[2] = spawnBlock(x, y+BSIZE, tetromino.color);
+                        tetromino.blocks[3] = spawnBlock(x, y+2*BSIZE, tetromino.color);
                         tetromino.rotation++;
                     }
                 } break;
                 case 3: {
-                    if (x >= BSIZE && x <= (GAME_WIDTH-(2*BSIZE))
-                        && (pixels[x-BSIZE][y+2*BSIZE].isActive || pixels[x-BSIZE][y+2*BSIZE].isEmpty)
-                        && (pixels[x][y+2*BSIZE].isActive || pixels[x][y+2*BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+2*BSIZE].isActive || pixels[x+BSIZE][y+2*BSIZE].isEmpty)
-                        && (pixels[x+2*BSIZE][y+2*BSIZE].isActive || pixels[x+2*BSIZE][y+2*BSIZE].isEmpty)) {
+                    if (x <= (GAME_WIDTH-3*BSIZE)
+                        && (pixels[y+BSIZE][x+2*BSIZE].isActive || pixels[y+BSIZE][x+2*BSIZE].isEmpty)
+                        && (pixels[y+2*BSIZE][x].isActive || pixels[y+2*BSIZE][x].isEmpty)) {
                         clearTetrominoBlocks();
-                        tetromino.blocks[0] = spawnBlock(x-BSIZE, y+2*BSIZE, tetromino.color);
-                        tetromino.blocks[1] = spawnBlock(x, y+2*BSIZE, tetromino.color);
-                        tetromino.blocks[2] = spawnBlock(x+BSIZE, y+2*BSIZE, tetromino.color);
-                        tetromino.blocks[3] = spawnBlock(x+2*BSIZE, y+2*BSIZE, tetromino.color);
+                        tetromino.blocks[0] = spawnBlock(x+BSIZE, y+BSIZE, tetromino.color);
+                        tetromino.blocks[1] = spawnBlock(x+2*BSIZE, y+BSIZE, tetromino.color);
+                        tetromino.blocks[2] = spawnBlock(x, y+2*BSIZE, tetromino.color);
+                        tetromino.blocks[3] = spawnBlock(x+BSIZE, y+2*BSIZE, tetromino.color);
                         tetromino.rotation++;
                     }
                 } break;
             }            
         } break;
 
-        // TODO
         case S: {
             switch (tetromino.rotation % 4) {
                 case 0: {
-                    if (y >= (2*BSIZE) && y <= (GAME_HEIGHT-(2*BSIZE))
-                        && (pixels[x+2*BSIZE][y+BSIZE].isActive || pixels[x+2*BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x+2*BSIZE][y].isActive || pixels[x+2*BSIZE][y].isEmpty)
-                        && (pixels[x+2*BSIZE][y-BSIZE].isActive || pixels[x+2*BSIZE][y-BSIZE].isEmpty)
-                        && (pixels[x+2*BSIZE][y-2*BSIZE].isActive || pixels[x+2*BSIZE][y-2*BSIZE].isEmpty)) {
+                    if (y >= BSIZE
+                        && (pixels[y][x+2*BSIZE].isActive || pixels[y][x+2*BSIZE].isEmpty)
+                        && (pixels[y-BSIZE][x+2*BSIZE].isActive || pixels[y-BSIZE][x+2*BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
-                        tetromino.blocks[0] = spawnBlock(x+2*BSIZE, y-2*BSIZE, tetromino.color);
-                        tetromino.blocks[1] = spawnBlock(x+2*BSIZE, y-BSIZE, tetromino.color);
+                        tetromino.blocks[0] = spawnBlock(x+2*BSIZE, y-BSIZE, tetromino.color);
+                        tetromino.blocks[1] = spawnBlock(x+BSIZE, y, tetromino.color);
                         tetromino.blocks[2] = spawnBlock(x+2*BSIZE, y, tetromino.color);
-                        tetromino.blocks[3] = spawnBlock(x+2*BSIZE, y+BSIZE, tetromino.color);
-                        tetromino.rotation++;
-                    }
-                } break;
-                case 1: {
-                    if (x >= (2*BSIZE) && x <= (GAME_WIDTH-(2*BSIZE))
-                        && (pixels[x-2*BSIZE][y+BSIZE].isActive || pixels[x-2*BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x-BSIZE][y+BSIZE].isActive || pixels[x-BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x][y+BSIZE].isActive || pixels[x][y+BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+BSIZE].isActive || pixels[x+BSIZE][y+BSIZE].isEmpty)) {
-                        clearTetrominoBlocks();
-                        tetromino.blocks[0] = spawnBlock(x-2*BSIZE, y+BSIZE, tetromino.color);
-                        tetromino.blocks[1] = spawnBlock(x-BSIZE, y+BSIZE, tetromino.color);
-                        tetromino.blocks[2] = spawnBlock(x, y+BSIZE, tetromino.color);
                         tetromino.blocks[3] = spawnBlock(x+BSIZE, y+BSIZE, tetromino.color);
                         tetromino.rotation++;
                     }
                 } break;
-                case 2: {
-                    if (y >= BSIZE && y <= (GAME_HEIGHT-(3*BSIZE))
-                        && (pixels[x+BSIZE][y-BSIZE].isActive || pixels[x+BSIZE][y-BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y].isActive || pixels[x+BSIZE][y].isEmpty)
-                        && (pixels[x+BSIZE][y+BSIZE].isActive || pixels[x+BSIZE][y+BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+2*BSIZE].isActive || pixels[x+BSIZE][y+2*BSIZE].isEmpty)) {
+                case 1: {
+                    if (x >= (2*BSIZE)
+                        && (pixels[y][x-2*BSIZE].isActive || pixels[y][x-2*BSIZE].isEmpty)
+                        && (pixels[y][x-BSIZE].isActive || pixels[y][x-BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
-                        tetromino.blocks[0] = spawnBlock(x+BSIZE, y-BSIZE, tetromino.color);
-                        tetromino.blocks[1] = spawnBlock(x+BSIZE, y, tetromino.color);
+                        tetromino.blocks[0] = spawnBlock(x-2*BSIZE, y, tetromino.color);
+                        tetromino.blocks[1] = spawnBlock(x-BSIZE, y, tetromino.color);
+                        tetromino.blocks[2] = spawnBlock(x-BSIZE, y+BSIZE, tetromino.color);
+                        tetromino.blocks[3] = spawnBlock(x, y+BSIZE, tetromino.color);
+                        tetromino.rotation++;
+                    }
+                } break;
+                case 2: {
+                    if (y <= (GAME_HEIGHT-BSIZE)
+                        && (pixels[y+BSIZE][x].isActive || pixels[y+BSIZE][x].isEmpty)
+                        && (pixels[y+2*BSIZE][x].isActive || pixels[y+2*BSIZE][x].isEmpty)) {
+                        clearTetrominoBlocks();
+                        tetromino.blocks[0] = spawnBlock(x+BSIZE, y, tetromino.color);
+                        tetromino.blocks[1] = spawnBlock(x, y+BSIZE, tetromino.color);
                         tetromino.blocks[2] = spawnBlock(x+BSIZE, y+BSIZE, tetromino.color);
-                        tetromino.blocks[3] = spawnBlock(x+BSIZE, y+2*BSIZE, tetromino.color);
+                        tetromino.blocks[3] = spawnBlock(x, y+2*BSIZE, tetromino.color);
                         tetromino.rotation++;
                     }
                 } break;
                 case 3: {
-                    if (x >= BSIZE && x <= (GAME_WIDTH-(2*BSIZE))
-                        && (pixels[x-BSIZE][y+2*BSIZE].isActive || pixels[x-BSIZE][y+2*BSIZE].isEmpty)
-                        && (pixels[x][y+2*BSIZE].isActive || pixels[x][y+2*BSIZE].isEmpty)
-                        && (pixels[x+BSIZE][y+2*BSIZE].isActive || pixels[x+BSIZE][y+2*BSIZE].isEmpty)
-                        && (pixels[x+2*BSIZE][y+2*BSIZE].isActive || pixels[x+2*BSIZE][y+2*BSIZE].isEmpty)) {
+                    if (x <= (GAME_WIDTH-2*BSIZE)
+                        && (pixels[y+2*BSIZE][x].isActive || pixels[y+2*BSIZE][x].isEmpty)
+                        && (pixels[y+2*BSIZE][x+BSIZE].isActive || pixels[y+2*BSIZE][x+BSIZE].isEmpty)) {
                         clearTetrominoBlocks();
-                        tetromino.blocks[0] = spawnBlock(x-BSIZE, y+2*BSIZE, tetromino.color);
-                        tetromino.blocks[1] = spawnBlock(x, y+2*BSIZE, tetromino.color);
-                        tetromino.blocks[2] = spawnBlock(x+BSIZE, y+2*BSIZE, tetromino.color);
-                        tetromino.blocks[3] = spawnBlock(x+2*BSIZE, y+2*BSIZE, tetromino.color);
+                        tetromino.blocks[0] = spawnBlock(x-BSIZE, y+BSIZE, tetromino.color);
+                        tetromino.blocks[1] = spawnBlock(x, y+BSIZE, tetromino.color);
+                        tetromino.blocks[2] = spawnBlock(x, y+2*BSIZE, tetromino.color);
+                        tetromino.blocks[3] = spawnBlock(x+BSIZE, y+2*BSIZE, tetromino.color);
                         tetromino.rotation++;
                     }
                 } break;
-            }            
+            }
         } break;
 
         default: break;

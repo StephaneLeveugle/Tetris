@@ -1,11 +1,13 @@
 #define NB_OF_PIXELS GAME_HEIGHT * GAME_WIDTH
-#define BSIZE 50
+const int BSIZE = 50;
 
 struct GameControls {
     bool isRightPressed, wasRightPressed,
          isLeftPressed, wasLeftPressed,
          isDownPressed, wasDownPressed,
-         isUpPressed, wasUpPressed;
+         isUpPressed, wasUpPressed,
+         isEnterPressed, wasEnterPressed,
+         isBackspacePressed, wasBackspacePressed;
 };
 
 struct Pixel {
@@ -39,9 +41,10 @@ struct ClearLinesResult {
 Pixel pixels[GAME_HEIGHT][GAME_WIDTH] = {};
 // this is the active tetromino, controlled by the player
 Tetromino tetromino = {};
-u16 blockIndexCounter = 0;
+Tetromino nextTetromino = {};
 
 ClearLinesResult clearLines(u32 *buffer);
+void copyPixelsToBuffer(u32 *buffer);
 
 #include "spawn.cpp"
 #include "movement.cpp"
@@ -51,9 +54,39 @@ void gameInit(u32 *buffer) {
     spawnAny();
 }
 
-void gameUpdate(u32 *buffer, GameControls *gameControls, double *timeIdle) {
+// returns false if game over
+// returns true otherwise
+bool gameUpdate(u32 *buffer, GameControls *gameControls, double *timeIdle) {
 
-    if (gameControls->isLeftPressed) {
+    if (gameControls->isEnterPressed) {
+        if (!gameControls->wasEnterPressed) {
+            gameControls->wasEnterPressed = true;
+            FILE *pixelsFile = fopen("pixels.debug", "wb");
+            if (pixelsFile) {
+                fwrite(pixels, sizeof(Pixel), NB_OF_PIXELS, pixelsFile);
+            }
+            fclose(pixelsFile);
+            FILE *tetrominoFile = fopen("tetromino.debug", "wb");
+            if (tetrominoFile) {
+                fwrite(&tetromino, sizeof(Tetromino), 1, tetrominoFile);
+            }
+            fclose(tetrominoFile);
+        }
+    } else if (gameControls->isBackspacePressed) {
+        if (!gameControls->wasBackspacePressed) {
+            gameControls->wasBackspacePressed = true;
+            FILE *pixelsFile = fopen("pixels.debug", "rb");
+            if (pixelsFile) {
+                fread(pixels, sizeof(Pixel), NB_OF_PIXELS, pixelsFile);
+            }
+            fclose(pixelsFile);
+            FILE *tetrominoFile = fopen("tetromino.debug", "rb");
+            if (tetrominoFile) {
+                fread(&tetromino, sizeof(Tetromino), 1, tetrominoFile);
+            }
+            fclose(tetrominoFile);
+        }
+    } else if (gameControls->isLeftPressed) {
         if ((!gameControls->wasLeftPressed || *timeIdle > 100) && canMoveLeft()) {
             moveLeft();
             *timeIdle = 0;
@@ -120,19 +153,26 @@ void gameUpdate(u32 *buffer, GameControls *gameControls, double *timeIdle) {
         }  
 
         spawnAny();
+        if (!canMoveDown()) {
+            copyPixelsToBuffer(buffer);
+            return false;
+        }
         gameControls->isDownPressed = false;
         gameControls->wasDownPressed = false;
     }
 
+    copyPixelsToBuffer(buffer);
+
+    return true;
+}
+
+void copyPixelsToBuffer(u32 *buffer) {
     for (u16 i = 0; i < GAME_HEIGHT; i++) {
         for (u16 j = 0; j < GAME_WIDTH; j++) {
             buffer[(i*GAME_WIDTH)+j] = pxl.color;
         }
-    }    
+    }
 }
-
-// x = -y
-// y = x
 
 ClearLinesResult clearLines(u32 *buffer) {
     ClearLinesResult result = {};
